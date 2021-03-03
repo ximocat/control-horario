@@ -12,13 +12,15 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Control de la Jornada
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
+      <div>
+        <!-- <botones-registro></botones-registro> -->
+      </div>
     </q-header>
-
+    
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
@@ -30,7 +32,7 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          Menú
         </q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
@@ -51,46 +53,40 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Usuario',
+    caption: 'Gestión del usuario',
+    icon: 'manage_accounts',
+    link: ''
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
+    title: 'Jornada',
+    caption: 'Introducción de la jornada',
+    icon: 'input',
+    link: ''
+  },
+  {
+    title: 'Informes',
+    caption: 'Resumenes de los datos de la jornada',
+    icon: 'auto_graph',
+    link: ''
+  },
+  {
+    title: 'Importar/Exportar',
+    caption: 'Recuperar/Guardar datos de fuentes externas',
+    icon: 'import_export',
+    link: ''
+  },
+  {
+    title: 'Alarmas',
+    caption: 'Programar alarmas para inicio/fin jornada',
+    icon: 'access_alarm',
+    link: ''
+  },
+  {
+    title: 'About',
+    caption: 'Repositorio público',
     icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    link: 'https://github.com/ximocat/control-horario'
   }
 ];
 
