@@ -31,20 +31,18 @@
         />
       </div>
 
-      <div class="q-pa-md">
+      <!-- <div class="q-pa-md">
         <q-list bordered separators>
           <q-item v-for="f in fechasInicio" :key="f['hora']">
             {{ f["fecha"] }} , {{ f["hora"] }}
           </q-item>
         </q-list>
-      </div>
+      </div> -->
 
       <div class="q-pa-md">
         <q-table
           title="Jornada de hoy"
-          :data="{ fechasFin, fechasFin }"
-          :columns="columns"
-          row-key="name"
+          :data="fechasInicio"
         />
       </div>
     </div>
@@ -60,7 +58,8 @@ export default {
       fechaActual: null,
       activarBtnInicio: true,
       activarBtnFin: false,
-      timer: null
+      timer: null,
+      
     };
   },
   computed: {
@@ -94,7 +93,7 @@ export default {
       }
       return "";
     },
-    horaActual: function(){
+    horaActual: function () {
       return this.fechaActual.toLocaleTimeString();
     },
   },
@@ -123,15 +122,15 @@ export default {
 
       return fechaHora;
     },
-    actualizarFecha: function(){
+    actualizarFecha: function () {
       this.fechaActual = new Date();
-    }
+    },
   },
   created: function () {
     this.actualizarFecha();
   },
   mounted: function () {
-    this.timer= setInterval(this.actualizarFecha,1000);
+    this.timer = setInterval(this.actualizarFecha, 1000);
   },
   beforeDestroy: function () {
     clearTimeout(this.timer);
