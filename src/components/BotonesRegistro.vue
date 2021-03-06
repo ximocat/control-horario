@@ -32,7 +32,8 @@
     <!-- Chip para la duración de la jornada actual -->
     <div class="row justify-center q-gutter-xs">
       <q-chip outline color="primary" text-color="white" size="md" square>
-        Tiempo Total Jornada: {{ tiempoJornada }} h</q-chip
+        Tiempo Jornada: {{ tiempoJornada[0] }}h {{ tiempoJornada[1] }}m
+        {{ tiempoJornada[2] }}s</q-chip
       >
     </div>
     <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
@@ -49,6 +50,9 @@
 <script>
 export default {
   name: "botones-registro",
+  //********************
+  //Variables reactivas
+  //********************
   data: function () {
     return {
       fechasInicio: [], //Array con las fechas de inicio de los intervalos de jornada
@@ -61,16 +65,15 @@ export default {
       //jornadas: [], //Array con todas las jornadas ej['fecha':'10/10/2020','jornada':'8.3']
     };
   },
+  //********************
+  //Variables calculadas
+  //********************
   computed: {
-    horaInicio: function () {
-      return this.fechaInicio.toLocaleTimeString();
-    },
-    horaFin: function () {
-      return this.fechaInicio.toLocaleTimeString();
-    },
+    //Contiene el día de la fecha actual en formato dd/mm/aaaa
     diaActual: function () {
       return this.fechaActual.toLocaleDateString();
     },
+    //Contiene el día de la semana de la fecha actual
     diaSemanaActual: function () {
       switch (this.fechaActual.getDay()) {
         case 0:
@@ -92,9 +95,11 @@ export default {
       }
       return "";
     },
+    //Contiene la hora actual en formato hh:mm:ss
     horaActual: function () {
       return this.fechaActual.toLocaleTimeString();
     },
+    //Contiene los datos para actulizar la tabla de intervalos de jornada
     datosTabla: function () {
       let vector = [];
 
@@ -117,19 +122,34 @@ export default {
       }
       return vector;
     },
+    //Contiene un array con la duración de la jornada actual.
+    //tiempoJornada[0] contiene las horas
+    //tiempoJornada[1] contiene los minutos
+    //tiempoJornada[2] contiene los segundos
     tiempoJornada: function () {
-      let cont = 0;
+      let segundos = 0;
+      let horas = 0;
+      let minutos = 0;
       for (let i = 0; i < this.fechasInicio.length; i++) {
         let inicio = this.fechasInicio[i].getTime();
         let fin;
         this.fechasFin.length > i
           ? (fin = this.fechasFin[i].getTime())
-          : (fin = new Date().getTime());
-        cont += (fin - inicio) / (1000 * 60 * 60);
+          : (fin = this.fechaActual.getTime());
+        segundos += (fin - inicio) / 1000;
       }
-      return cont;
+      horas = parseInt(segundos / 3600);
+      segundos -= horas * 3600;
+      minutos = parseInt(segundos / 60);
+      segundos = parseInt(segundos - minutos * 60);
+
+      return [horas, minutos, segundos];
     },
   },
+
+  //********************
+  // Métodos
+  //********************
   methods: {
     iniciarJornada: function () {
       this.activarBtnInicio = false;
