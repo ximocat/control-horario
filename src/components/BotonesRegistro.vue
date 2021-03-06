@@ -47,6 +47,7 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: "botones-registro",
@@ -151,38 +152,50 @@ export default {
   // Métodos
   //********************
   methods: {
+    //Añade la fecha actual (tipo Date) al array de fechas de inicio y
+    //activa/desactiva los botones correspondientes
     iniciarJornada: function () {
       this.activarBtnInicio = false;
       this.activarBtnFin = true;
 
       this.fechasInicio.push(this.fechaActual);
     },
-
+    //Añade la fecha actual (tipo Date) al array de fechas de fin y
+    //activa/desactiva los botones correspondientes
     finalizarJornada: function () {
       this.activarBtnInicio = true;
       this.activarBtnFin = false;
 
       this.fechasFin.push(this.fechaActual);
     },
-
+    //Obtiene la fecha actual
     actualizarFecha: function () {
       this.fechaActual = new Date();
     },
-
+    //Función a la que se le pasa como argumento un objeto tipo Date y devuelve
+    //la hora (hh:mm:ss) en formato string
     pasarHora: function (objetoDate) {
       return objetoDate.toLocaleTimeString();
     },
+    //Función a la que se le pasa como argumento un objeto tipo Date y devuelve
+    //la fecha (dd/mm/aaaa) en formato string
     pasarFecha: function (objetoDate) {
       return objetoDate.toLocaleDateString();
     },
   },
+  
+  //********************
+  // Hooks de Vue
+  //********************
   created: function () {
     this.actualizarFecha();
   },
   mounted: function () {
+    //Se establece un temporizador para actulizar la fechaActual
     this.timer = setInterval(this.actualizarFecha, 1000);
   },
-  beforeDestroy: function () {
+  beforeDestroy: function () {//
+    //Se borra el temporizador antes de destruir la instancia de Vue
     clearTimeout(this.timer);
   },
 };
