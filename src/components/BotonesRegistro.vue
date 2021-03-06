@@ -1,50 +1,48 @@
 <template>
-  <div class="row justify-center">
-    <div class="q-pa-md">
-      <div class="q-gutter-sm">
-        <div class="row justify-center">
-          <q-chip outline color="primary" text-color="white" size="xl" square>
-            {{ diaSemanaActual }} {{ diaActual }} {{ horaActual }}
-          </q-chip>
-        </div>
-        <q-space></q-space>
-
-        <q-btn
-          @click="iniciarJornada"
-          icon="play_arrow"
-          label="Inicia Jornada"
-          stack
-          glossy
-          color="primary"
-          id="btnInicio"
-          :disabled="!activarBtnInicio"
-        />
-        <q-btn
-          @click="finalizarJornada"
-          icon="stop"
-          label="Acaba Jornada"
-          stack
-          glossy
-          color="red"
-          id="btnFin"
-          :disabled="!activarBtnFin"
-        />
-      </div>
-
-      <!-- <div class="q-pa-md">
-        <q-list bordered separators>
-          <q-item v-for="f in fechasInicio" :key="f['hora']">
-            {{ f["fecha"] }} , {{ f["hora"] }}
-          </q-item>
-        </q-list>
-      </div> -->
-
-      <div class="q-pa-md">
-        <q-table
-          title="Jornada de hoy"
-          :data="fechasInicio"
-        />
-      </div>
+  <div class="q-pa-md q-gutter-sm">
+    <!-- Chip con la fecha actual -->
+    <div class="row justify-center q-gutter-xs">
+      <q-chip outline color="primary" text-color="white" size="xl" square>
+        {{ diaSemanaActual }} {{ diaActual }} {{ horaActual }}
+      </q-chip>
+    </div>
+    <!-- Botones para el registro de la jornada -->
+    <div class="row justify-center q-gutter-xs">
+      <q-btn
+        @click="iniciarJornada"
+        icon="play_arrow"
+        label="Inicia Jornada"
+        stack
+        glossy
+        color="primary"
+        id="btnInicio"
+        :disabled="!activarBtnInicio"
+      />
+      <q-btn
+        @click="finalizarJornada"
+        icon="stop"
+        label="Acaba Jornada"
+        stack
+        glossy
+        color="red"
+        id="btnFin"
+        :disabled="!activarBtnFin"
+      />
+    </div>
+    <!-- Chip para la duración de la jornada actual -->
+    <div class="row justify-center q-gutter-xs">
+      <q-chip outline color="primary" text-color="white" size="md" square>
+        Tiempo Total Jornada: {{ tiempoJornada }} h</q-chip
+      >
+    </div>
+    <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
+    <div class="q-gutter-xs">
+      <q-table
+        title="Jornada de hoy"
+        :data="datosTabla"
+        hide-bottom
+        :rows-per-page-options="[0]"
+      />
     </div>
   </div>
 </template>
@@ -53,13 +51,14 @@ export default {
   name: "botones-registro",
   data: function () {
     return {
-      fechasInicio: [],
-      fechasFin: [],
-      fechaActual: null,
+      fechasInicio: [], //Array con las fechas de inicio de los intervalos de jornada
+      fechasFin: [], //Array con las fechas de inicio de los intervalos de jornada
+      fechaActual: null, //Contiene la fecha/hora actual
+      //Flags para detectar si deben estar activados botones
       activarBtnInicio: true,
       activarBtnFin: false,
-      timer: null,
-      
+      timer: null, //Timer para poder representar la hora actual en pantalla
+      jornadas: [], //Array con todas las jornadas ej['fecha':'10/10/2020','jornada':'8.3']
     };
   },
   computed: {
@@ -96,34 +95,66 @@ export default {
     horaActual: function () {
       return this.fechaActual.toLocaleTimeString();
     },
+    datosTabla: function () {
+      let vector = [];
+
+      for (let i = 0; i < this.fechasInicio.length; i++) {
+        vector.push({
+          inicio:
+            this.pasarFecha(this.fechasInicio[i]) +
+            " " +
+            this.pasarHora(this.fechasInicio[i]),
+          fin:
+            this.fechasFin.length > i
+              ? this.pasarFecha(this.fechasFin[i]) +
+                " " +
+                this.pasarHora(this.fechasFin[i])
+              : "- - -",
+        });
+      }
+      return vector;
+    },
+    tiempoJornada: function () {
+      let cont = 0;
+      for (let i = 0; i < this.fechasInicio.length; i++) {
+        let inicio = this.fechasInicio[i].getTime();
+        let fin;
+        this.fechasFin.length > i
+          ? (fin = this.fechasFin[i].getTime())
+          : (fin = new Date().getTime());
+        cont += (fin - inicio) / (1000 * 60 * 60);
+      }
+      return cont;
+    },
   },
   methods: {
     iniciarJornada: function () {
       this.activarBtnInicio = false;
       this.activarBtnFin = true;
 
-      this.fechasInicio.push(this.obtenerDiaHoraActual());
+      this.fechasInicio.push(this.obtenerFechaActual());
     },
 
     finalizarJornada: function () {
       this.activarBtnInicio = true;
       this.activarBtnFin = false;
 
-      this.fechasFin.push(this.obtenerDiaHoraActual());
+      this.fechasFin.push(this.obtenerFechaActual());
     },
 
-    obtenerDiaHoraActual: function () {
-      let ahora = new Date();
-
-      let fechaHora = {
-        fecha: ahora.toLocaleDateString(),
-        hora: ahora.toLocaleTimeString(),
-      };
-
-      return fechaHora;
+    obtenerFechaActual: function () {
+      return new Date();
     },
+
     actualizarFecha: function () {
       this.fechaActual = new Date();
+    },
+
+    pasarHora: function (objetoDate) {
+      return objetoDate.toLocaleTimeString();
+    },
+    pasarFecha: function (objetoDate) {
+      return objetoDate.toLocaleDateString();
     },
   },
   created: function () {
