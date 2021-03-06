@@ -53,12 +53,12 @@ export default {
     return {
       fechasInicio: [], //Array con las fechas de inicio de los intervalos de jornada
       fechasFin: [], //Array con las fechas de inicio de los intervalos de jornada
-      fechaActual: null, //Contiene la fecha/hora actual
+      fechaActual: null, //Contiene la fecha/hora actual (tipo Date)
       //Flags para detectar si deben estar activados botones
       activarBtnInicio: true,
       activarBtnFin: false,
       timer: null, //Timer para poder representar la hora actual en pantalla
-      jornadas: [], //Array con todas las jornadas ej['fecha':'10/10/2020','jornada':'8.3']
+      //jornadas: [], //Array con todas las jornadas ej['fecha':'10/10/2020','jornada':'8.3']
     };
   },
   computed: {
@@ -99,18 +99,21 @@ export default {
       let vector = [];
 
       for (let i = 0; i < this.fechasInicio.length; i++) {
-        vector.push({
-          inicio:
-            this.pasarFecha(this.fechasInicio[i]) +
-            " " +
-            this.pasarHora(this.fechasInicio[i]),
-          fin:
-            this.fechasFin.length > i
-              ? this.pasarFecha(this.fechasFin[i]) +
-                " " +
-                this.pasarHora(this.fechasFin[i])
-              : "- - -",
-        });
+        //Comprobamos que los registros sean del día actual
+        if (this.pasarFecha(this.fechasInicio[i]) === this.diaActual) {
+          vector.push({
+            inicio:
+              this.pasarFecha(this.fechasInicio[i]) +
+              " " +
+              this.pasarHora(this.fechasInicio[i]),
+            fin:
+              this.fechasFin.length > i
+                ? this.pasarFecha(this.fechasFin[i]) +
+                  " " +
+                  this.pasarHora(this.fechasFin[i])
+                : "- - -",
+          });
+        }
       }
       return vector;
     },
@@ -132,18 +135,14 @@ export default {
       this.activarBtnInicio = false;
       this.activarBtnFin = true;
 
-      this.fechasInicio.push(this.obtenerFechaActual());
+      this.fechasInicio.push(this.fechaActual);
     },
 
     finalizarJornada: function () {
       this.activarBtnInicio = true;
       this.activarBtnFin = false;
 
-      this.fechasFin.push(this.obtenerFechaActual());
-    },
-
-    obtenerFechaActual: function () {
-      return new Date();
+      this.fechasFin.push(this.fechaActual);
     },
 
     actualizarFecha: function () {
