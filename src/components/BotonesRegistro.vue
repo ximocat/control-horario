@@ -49,7 +49,11 @@
 </template>
 
 <script>
-import FuncionesAuxiliares from "../clases/FuncionesAuxiliares";
+
+import FuncionesAuxiliares from "../clases/FuncionesAuxiliares.js";
+import IntervaloJornada from "../clases/IntervaloJornada.js";
+import JornadaTrabajo from "../clases/JornadaTrabajo.js";
+
 export default {
   name: "botones-registro",
   //********************
@@ -64,7 +68,8 @@ export default {
       activarBtnInicio: true,
       activarBtnFin: false,
       timer: null, //Timer para poder representar la hora actual en pantalla
-      //jornadas: [], //Array con todas las jornadas ej['fecha':'10/10/2020','jornada':'8.3']
+      intervaloActual: null, //Contiene la instancia del intervalo de tiempo actual
+      jornadaActual: null //Contiene la instancia de la jornada de tiempo actual
     };
   },
   //********************
@@ -153,21 +158,22 @@ export default {
   // Métodos
   //********************
   methods: {
-    //Añade la fecha actual (tipo Date) al array de fechas de inicio y
-    //activa/desactiva los botones correspondientes
+    //Instancia un nuevo intervalo de jornada con la fecha actual (tipo Date)
+    //y activa/desactiva los botones correspondientes
     iniciarIntervalo: function () {
       this.activarBtnInicio = false;
       this.activarBtnFin = true;
-
-      this.fechasInicio.push(this.fechaActual);
+      this.intervaloActual=new IntervaloJornada(this.fechaActual);
     },
-    //Añade la fecha actual (tipo Date) al array de fechas de fin y
+    //Añade la fechaActual a la fecha (tipo Date) de fin del intervaloActual
+    //añade el intervaloActual a la jornadaActual, borra el intervalo actual 7
     //activa/desactiva los botones correspondientes
     finalizarIntervalo: function () {
       this.activarBtnInicio = true;
       this.activarBtnFin = false;
-
-      this.fechasFin.push(this.fechaActual);
+      this.intervaloActual.setFechaFin(this.fechaActual);
+      this.jornadaActual.addIntervaloJornada(this.intervaloActual);
+      this.intervaloActual=null;//Borra el intervalo actual
     },
     //Obtiene la fecha actual
     actualizarFecha: function () {
@@ -184,6 +190,8 @@ export default {
   mounted: function () {
     //Se establece un temporizador para actulizar la fechaActual
     this.timer = setInterval(this.actualizarFecha, 1000);
+    //Instancio la jornada
+    this.jornadaActual = new JornadaTrabajo;
   },
   beforeDestroy: function () {//
     //Se borra el temporizador antes de destruir la instancia de Vue
