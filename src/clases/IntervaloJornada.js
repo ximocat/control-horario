@@ -1,5 +1,5 @@
 import FuncionesAuxiliares from "../clases/FuncionesAuxiliares.js";
-class IntervalosJornada {
+class IntervaloJornada {
     //Constructor al que se le pasa al menos un objeto Date que representa la 
     //fecha de inicio. Puede pasarse la fecha de fin en caso
     constructor(fechaInicio, fechaFin = null) {
