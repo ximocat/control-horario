@@ -39,7 +39,7 @@
     <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
     <div class="q-gutter-xs">
       <q-table
-        title="Jornada de hoy"
+        title="Jornada actual"
         :data="datosTabla"
         hide-bottom
         :rows-per-page-options="[0]"
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import FuncionesAuxiliares from "../clases/FuncionesAuxiliares";
 export default {
   name: "botones-registro",
   //********************
@@ -106,17 +107,17 @@ export default {
 
       for (let i = 0; i < this.fechasInicio.length; i++) {
         //Comprobamos que los registros sean del día actual
-        if (this.pasarFecha(this.fechasInicio[i]) === this.diaActual) {
+        if (FuncionesAuxiliares.pasarAfecha(this.fechasInicio[i]) === this.diaActual) {
           vector.push({
             inicio:
-              this.pasarFecha(this.fechasInicio[i]) +
+              FuncionesAuxiliares.pasarAfecha(this.fechasInicio[i]) +
               " " +
-              this.pasarHora(this.fechasInicio[i]),
+              FuncionesAuxiliares.pasarAhora(this.fechasInicio[i]),
             fin:
               this.fechasFin.length > i
-                ? this.pasarFecha(this.fechasFin[i]) +
+                ? FuncionesAuxiliares.pasarAfecha(this.fechasFin[i]) +
                   " " +
-                  this.pasarHora(this.fechasFin[i])
+                  FuncionesAuxiliares.pasarAhora(this.fechasFin[i])
                 : "- - -",
           });
         }
@@ -171,19 +172,9 @@ export default {
     //Obtiene la fecha actual
     actualizarFecha: function () {
       this.fechaActual = new Date();
-    },
-    //Función a la que se le pasa como argumento un objeto tipo Date y devuelve
-    //la hora (hh:mm:ss) en formato string
-    pasarHora: function (objetoDate) {
-      return objetoDate.toLocaleTimeString();
-    },
-    //Función a la que se le pasa como argumento un objeto tipo Date y devuelve
-    //la fecha (dd/mm/aaaa) en formato string
-    pasarFecha: function (objetoDate) {
-      return objetoDate.toLocaleDateString();
-    },
+    }
   },
-  
+
   //********************
   // Hooks de Vue
   //********************
