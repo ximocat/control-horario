@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import FuncionesAuxiliares from "../clases/FuncionesAuxiliares";
+import FuncionesAuxiliares from "../clases/FuncionesAuxiliares.js";
 export default {
   name: "botones-registro",
   //********************
