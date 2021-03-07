@@ -65,6 +65,7 @@
 import FuncionesAuxiliares from "../clases/FuncionesAuxiliares.js";
 import IntervaloJornada from "../clases/IntervaloJornada.js";
 import JornadaTrabajo from "../clases/JornadaTrabajo.js";
+import ListaJornadas from "../clases/ListaJornadas.js";
 
 export default {
   name: "botones-registro",
@@ -83,6 +84,7 @@ export default {
       timer: null, //Timer para poder representar la hora actual en pantalla
       intervaloActual: null, //Contiene la instancia del intervalo de tiempo actual
       jornadaActual: null, //Contiene la instancia de la jornada actual
+      arrayJornadas: new ListaJornadas() //Contiene la instancia de la clase ListaJornadas
     };
   },
   //********************
@@ -204,6 +206,7 @@ export default {
         this.jornadaActual.addIntervaloJornada(this.intervaloActual);
         this.intervaloActual = null; //Borra el intervalo actual
       }
+      this.arrayJornadas.addJornada(this.jornadaActual);
       this.jornadaActual=null; //Borra la jornada actual
       this.jornadaActual=new JornadaTrabajo(); //Instancio una nueva jornada
     },
