@@ -47,4 +47,4 @@ class IntervaloJornada {
     }
 }
 
-export default IntervalosJornada;
+export default IntervaloJornada;
