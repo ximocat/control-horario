@@ -18,7 +18,7 @@ class FuncionesAuxiliares {
         let horas = 0;
         let minutos = 0;
         segundos = (fin.getTime() - inicio.getTime) / 1000;
-        horas = parseInt(segundos / 3600));
+        horas = parseInt(segundos / 3600);
         segundos -= horas * 3600;
         minutos = parseInt(segundos / 60);
         segundos = parseInt(segundos - minutos * 60);

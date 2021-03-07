@@ -9,7 +9,7 @@
     <!-- Botones para el registro de la jornada -->
     <div class="row justify-center q-gutter-xs">
       <q-btn
-        @click="iniciarJornada"
+        @click="iniciarIntervalo"
         icon="play_arrow"
         label="Inicia Jornada"
         stack
@@ -19,7 +19,7 @@
         :disabled="!activarBtnInicio"
       />
       <q-btn
-        @click="finalizarJornada"
+        @click="finalizarIntervalo"
         icon="stop"
         label="Acaba Jornada"
         stack
@@ -155,7 +155,7 @@ export default {
   methods: {
     //Añade la fecha actual (tipo Date) al array de fechas de inicio y
     //activa/desactiva los botones correspondientes
-    iniciarJornada: function () {
+    iniciarIntervalo: function () {
       this.activarBtnInicio = false;
       this.activarBtnFin = true;
 
@@ -163,7 +163,7 @@ export default {
     },
     //Añade la fecha actual (tipo Date) al array de fechas de fin y
     //activa/desactiva los botones correspondientes
-    finalizarJornada: function () {
+    finalizarIntervalo: function () {
       this.activarBtnInicio = true;
       this.activarBtnFin = false;
 
