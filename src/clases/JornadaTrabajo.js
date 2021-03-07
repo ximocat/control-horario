@@ -12,3 +12,5 @@ class JornadaTrabajo{
     }
 
 }
+
+export default JornadaTrabajo;
