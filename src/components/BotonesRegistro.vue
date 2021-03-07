@@ -11,22 +11,35 @@
       <q-btn
         @click="iniciarIntervalo"
         icon="play_arrow"
-        label="Inicia Jornada"
+        label="Inicio"
         stack
         glossy
         color="primary"
         id="btnInicio"
         :disabled="!activarBtnInicio"
+        style="width: 30%"
       />
       <q-btn
         @click="finalizarIntervalo"
+        icon="pause"
+        label="Pausa"
+        stack
+        glossy
+        color="red"
+        id="btnFin"
+        :disabled="!activarBtnPausa"
+        style="width: 30%"
+      />
+      <q-btn
+        @click="finalizarJornada"
         icon="stop"
-        label="Acaba Jornada"
+        label="Fin"
         stack
         glossy
         color="red"
         id="btnFin"
         :disabled="!activarBtnFin"
+        style="width: 30%"
       />
     </div>
     <!-- Chip para la duración de la jornada actual -->
@@ -45,6 +58,7 @@
         :rows-per-page-options="[0]"
       />
     </div>
+    
   </div>
 </template>
 
@@ -66,6 +80,7 @@ export default {
       fechaActual: null, //Contiene la fecha/hora actual (tipo Date)
       //Flags para detectar si deben estar activados botones
       activarBtnInicio: true,
+      activarBtnPausa: false,
       activarBtnFin: false,
       timer: null, //Timer para poder representar la hora actual en pantalla
       intervaloActual: null, //Contiene la instancia del intervalo de tiempo actual
