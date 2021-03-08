@@ -25,6 +25,10 @@ class JornadaTrabajo {
         return duracion;
 
     }
+    //Metodo para obtener el array de Intervalos
+    getIntervalos(){
+        return this.arrayIntervalos;
+    }
 
 }
 
