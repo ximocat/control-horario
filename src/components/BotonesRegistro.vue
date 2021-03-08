@@ -83,7 +83,7 @@ export default {
       timer: null, //Timer para poder representar la hora actual en pantalla
       intervaloActual: null, //Contiene la instancia del intervalo de tiempo actual
       jornadaActual: null, //Contiene la instancia de la jornada actual
-      arrayJornadas: new ListaJornadas() //Contiene la instancia de la clase ListaJornadas
+      arrayJornadas: new ListaJornadas(), //Contiene la instancia de la clase ListaJornadas
     };
   },
   //********************
@@ -122,28 +122,23 @@ export default {
     },
     //Contiene los datos para actulizar la tabla de intervalos de jornada
     datosTabla: function () {
+      
       let vector = [];
-
-      for (let i = 0; i < this.fechasInicio.length; i++) {
-        //Comprobamos que los registros sean del día actual
-        if (
-          FuncionesAuxiliares.pasarAfecha(this.fechasInicio[i]) ===
-          this.diaActual
-        ) {
-          vector.push({
-            inicio:
-              FuncionesAuxiliares.pasarAfecha(this.fechasInicio[i]) +
-              " " +
-              FuncionesAuxiliares.pasarAhora(this.fechasInicio[i]),
-            fin:
-              this.fechasFin.length > i
-                ? FuncionesAuxiliares.pasarAfecha(this.fechasFin[i]) +
-                  " " +
-                  FuncionesAuxiliares.pasarAhora(this.fechasFin[i])
-                : "- - -",
-          });
-        }
+      for (let i = 0; i < this.jornadaActual.length; i++) {
+        vector.push({
+          inicio:
+            FuncionesAuxiliares.pasarAfecha(this.jornadaActual[i].getFechaInicio()) +
+            " " +
+            FuncionesAuxiliares.pasarAhora(this.jornadaActual[i].getFechaInicio()),
+          fin:
+            this.fechasFin.length > i
+              ? FuncionesAuxiliares.pasarAfecha(this.jornadaActual[i].getFechaFin()) +
+                " " +
+                FuncionesAuxiliares.pasarAhora(this.jornadaActual[i].getFechaFin())
+              : "- - -",
+        });
       }
+      console.log(vector);
       return vector;
     },
     //Contiene un string tipo hh:mm:ss con la duración de la jornada actual.
@@ -187,14 +182,17 @@ export default {
         this.intervaloActual = null; //Borra el intervalo actual
       }
       this.arrayJornadas.addJornada(this.jornadaActual);
-      this.jornadaActual=null; //Borra la jornada actual
-      this.jornadaActual=new JornadaTrabajo(); //Instancio una nueva jornada
+      this.jornadaActual = null; //Borra la jornada actual
+      this.jornadaActual = new JornadaTrabajo(); //Instancio una nueva jornada
     },
     //Obtiene la fecha actual
     actualizarFecha: function () {
       this.fechaActual = new Date();
     },
   },
+
+  
+
 
   //********************
   // Hooks de Vue
@@ -207,7 +205,6 @@ export default {
   mounted: function () {
     //Se establece un temporizador para actulizar la fechaActual
     this.timer = setInterval(this.actualizarFecha, 1000);
-    
   },
   beforeDestroy: function () {
     //
