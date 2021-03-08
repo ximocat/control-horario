@@ -17,23 +17,25 @@ class FuncionesAuxiliares {
         let segundos = 0;
         let horas = 0;
         let minutos = 0;
-        segundos = (fin.getTime() - inicio.getTime) / 1000;
+        segundos = (fin.getTime() - inicio.getTime()) / 1000;
         horas = parseInt(segundos / 3600);
         segundos -= horas * 3600;
         minutos = parseInt(segundos / 60);
         segundos = parseInt(segundos - minutos * 60);
-        return formatearDosCaracteres(horas) + ":" +
-            formatearDosCaracteres(minutos) + ":" +
-            formatearDosCaracteres(segundos);
+        return this.formatearDosCaracteres(horas) + ":" +
+            this.formatearDosCaracteres(minutos) + ":" +
+            this.formatearDosCaracteres(segundos);
     }
 
     //Funcion estática a la que se le pasan dos string tipo hh:mm:ss y nos 
     //devuelve otro string tipo hh:mm:ss que representa la suma de ambos
-    static sumaDuracionesString(duracion1, duracion2){
-        let d1=parseInt(duracion1.splice(":"));
-        let d2=parseInt(duracion2.splice(":"));
+    static sumaDuracionesString(duracion1, duracion2) {
+        let d1 = duracion1.split(":");
+        let d2 = duracion2.split(":");
         //Paso la suma de ambos a segundos
-        let segundos= 3600*(d1[0]+d2[0])+60*(d1[1]+d2[1]) + (d1[2]+d2[2]);
+        let segundos = 3600 * (parseInt(d1[0]) + parseInt(d2[0])) +
+            60 * (parseInt(d1[1]) + parseInt(d2[1])) + 
+            (parseInt(d1[2]) + parseInt(d2[2]));
         //Calculo las horas
         let horas = parseInt(segundos / 3600);
         segundos -= horas * 3600;
@@ -41,15 +43,17 @@ class FuncionesAuxiliares {
         let minutos = parseInt(segundos / 60);
         segundos = parseInt(segundos - minutos * 60);
         //Devolvemos el nuevo string ya sumado
-        return formatearDosCaracteres(horas) + ":" +
-            formatearDosCaracteres(minutos) + ":" +
-            formatearDosCaracteres(segundos);
+        return this.formatearDosCaracteres(horas) + ":" +
+            this.formatearDosCaracteres(minutos) + ":" +
+            this.formatearDosCaracteres(segundos);
+
+
     }
 
-    //Función a la que se le pasar un entero como parámetro y devuelve un string
+    //Función estática a la que se le pasar un entero como parámetro y devuelve un string
     //de 2 caracteres, rellenando si es necesario con un 0 a la izquierda
     //Ej 1 -> 01, 11 ->11
-    formatearDosCaracteres(num) {
+    static formatearDosCaracteres(num) {
         if (num < 10) {
             return "0" + num;
         }

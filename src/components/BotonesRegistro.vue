@@ -45,8 +45,7 @@
     <!-- Chip para la duración de la jornada actual -->
     <div class="row justify-center q-gutter-xs">
       <q-chip outline color="primary" text-color="white" size="md" square>
-        Tiempo Jornada: {{ tiempoJornada[0] }}h {{ tiempoJornada[1] }}m
-        {{ tiempoJornada[2] }}s</q-chip
+        Tiempo Jornada: {{ tiempoJornada }}</q-chip
       >
     </div>
     <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
@@ -147,28 +146,9 @@ export default {
       }
       return vector;
     },
-    //Contiene un array con la duración de la jornada actual.
-    //tiempoJornada[0] contiene las horas
-    //tiempoJornada[1] contiene los minutos
-    //tiempoJornada[2] contiene los segundos
+    //Contiene un string tipo hh:mm:ss con la duración de la jornada actual.
     tiempoJornada: function () {
-      let segundos = 0;
-      let horas = 0;
-      let minutos = 0;
-      for (let i = 0; i < this.fechasInicio.length; i++) {
-        let inicio = this.fechasInicio[i].getTime();
-        let fin;
-        this.fechasFin.length > i
-          ? (fin = this.fechasFin[i].getTime())
-          : (fin = this.fechaActual.getTime());
-        segundos += (fin - inicio) / 1000;
-      }
-      horas = parseInt(segundos / 3600);
-      segundos -= horas * 3600;
-      minutos = parseInt(segundos / 60);
-      segundos = parseInt(segundos - minutos * 60);
-
-      return [horas, minutos, segundos];
+      return this.jornadaActual.getDuracionJornada();
     },
   },
 
@@ -221,12 +201,13 @@ export default {
   //********************
   created: function () {
     this.actualizarFecha();
+    //Instancio la jornada
+    this.jornadaActual = new JornadaTrabajo();
   },
   mounted: function () {
     //Se establece un temporizador para actulizar la fechaActual
     this.timer = setInterval(this.actualizarFecha, 1000);
-    //Instancio la jornada
-    this.jornadaActual = new JornadaTrabajo();
+    
   },
   beforeDestroy: function () {
     //

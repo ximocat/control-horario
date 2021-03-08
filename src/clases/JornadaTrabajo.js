@@ -1,3 +1,5 @@
+import FuncionesAuxiliares from "../clases/FuncionesAuxiliares.js";
+import IntervaloJornada from "../clases/IntervaloJornada.js";
 //Clase que representa una jornada de trabajo
 class JornadaTrabajo {
 
@@ -18,9 +20,7 @@ class JornadaTrabajo {
         //Recorro todo el array y sumo las duraciones
         for (let i = 0; i < this.arrayIntervalos.length; i++) {
             duracion = FuncionesAuxiliares.sumaDuracionesString(duracion,
-                FuncionesAuxiliares.duracionIntervaloString(
-                    this.arrayIntervalos[i].getFechaInicio(),
-                    this.arrayIntervalos[i].getFechaFin()));
+                    this.arrayIntervalos[i].getTiempoIntervaloString());
         }
         return duracion;
 
