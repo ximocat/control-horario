@@ -96,13 +96,10 @@
 
 <script>
 import FuncionesAuxiliares from "../clases/FuncionesAuxiliares.js";
-<<<<<<< HEAD
-=======
 import IntervaloJornada from "../clases/IntervaloJornada.js";
 import JornadaTrabajo from "../clases/JornadaTrabajo.js";
 import ListaJornadas from "../clases/ListaJornadas.js";
 
->>>>>>> migracionClases
 export default {
   name: "botones-registro",
   //********************
