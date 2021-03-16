@@ -6,56 +6,90 @@
         {{ diaSemanaActual }} {{ diaActual }} {{ horaActual }}
       </q-chip>
     </div>
-    <!-- Botones para el registro de la jornada -->
     <div class="row justify-center q-gutter-xs">
-      <q-btn
-        @click="iniciarIntervalo"
-        icon="play_arrow"
-        label="Inicio"
-        stack
+      <q-btn-toggle
+        v-model="entradaPunch"
+        color="white"
+        toggle-color="info"
+        toggle-text-color="grey-10"
+        text-color="grey-6"
         glossy
-        color="primary"
-        id="btnInicio"
-        :disabled="!activarBtnInicio"
-        style="width: 30%"
-      />
-      <q-btn
-        @click="finalizarIntervalo"
-        icon="pause"
-        label="Pausa"
-        stack
-        glossy
-        color="red"
-        id="btnFin"
-        :disabled="!activarBtnPausa"
-        style="width: 30%"
-      />
-      <q-btn
-        @click="finalizarJornada"
-        icon="stop"
-        label="Fin"
-        stack
-        glossy
-        color="red"
-        id="btnFin"
-        :disabled="!activarBtnFin"
-        style="width: 30%"
+        :options="[
+          { label: 'Entrada punch', value: true },
+          { label: 'Entrada manual', value: false },
+        ]"
       />
     </div>
-    <!-- Chip para la duración de la jornada actual -->
-    <div class="row justify-center q-gutter-xs">
-      <q-chip outline color="primary" text-color="white" size="md" square>
-        Tiempo Jornada: {{ tiempoJornada }}</q-chip
-      >
+    <div v-show="entradaPunch" class="q-pa-md q-gutter-sm">
+      <!-- Botones para el registro de la jornada -->
+      <div class="row justify-center q-gutter-xs">
+        <q-btn
+          @click="iniciarIntervalo"
+          icon="play_arrow"
+          label="Inicio"
+          stack
+          glossy
+          color="primary"
+          id="btnInicio"
+          :disabled="!activarBtnInicio"
+          style="width: 30%"
+        />
+        <q-btn
+          @click="finalizarIntervalo"
+          icon="pause"
+          label="Pausa"
+          stack
+          glossy
+          color="red"
+          id="btnFin"
+          :disabled="!activarBtnPausa"
+          style="width: 30%"
+        />
+        <q-btn
+          @click="finalizarJornada"
+          icon="stop"
+          label="Fin"
+          stack
+          glossy
+          color="red"
+          id="btnFin"
+          :disabled="!activarBtnFin"
+          style="width: 30%"
+        />
+      </div>
+      <!-- Chip para la duración de la jornada actual -->
+      <div class="row justify-center q-gutter-xs">
+        <q-chip outline color="primary" text-color="white" size="md" square>
+          Tiempo Jornada: {{ tiempoJornada }}</q-chip
+        >
+      </div>
+      <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
+      <div class="q-gutter-xs">
+        <q-table
+          title="Jornada actual"
+          :data="datosTabla"
+          hide-bottom
+          :rows-per-page-options="[0]"
+        />
+      </div>
     </div>
-    <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
-    <div class="q-gutter-xs">
-      <q-table
-        title="Jornada actual"
-        :data="datosTabla"
-        hide-bottom
-        :rows-per-page-options="[0]"
-      />
+
+    <div v-show="!entradaPunch" class="q-pa-md q-gutter-sm">
+      <div class="q-pa-md">
+        <div class="q-gutter-md" style="max-width: 300px">
+          <q-input @click="prueba" filled v-model="entradaPunch" label="Dia" />
+          <q-input outlined v-model="entradaPunch" label="Hora Inicio" />
+          <q-input outlined v-model="entradaPunch" label="Hora Fin" />
+        </div>
+        <div class="row justify-center q-gutter-sm">
+          <q-btn round color="primary" icon="add" />
+        </div>
+        <div class="q-pa-md">
+          <div class="q-gutter-md row">
+            <q-datetime-picker v-model="date" type="datetime"/>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -84,6 +118,8 @@ export default {
       intervaloActual: null, //Contiene la instancia del intervalo de tiempo actual
       jornadaActual: null, //Contiene la instancia de la jornada actual
       arrayJornadas: new ListaJornadas(), //Contiene la instancia de la clase ListaJornadas
+      entradaPunch: true, //Indica si la entrada de datos será punch (true) o manual (false)
+      date: null,
     };
   },
   //********************
