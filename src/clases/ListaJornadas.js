@@ -10,6 +10,17 @@ class ListaJornadas{
         this.arrayJornadas.push(jornada);
     }
 
+    //Método que comprueba si existe una jornada
+    existeJornada(fechaString){
+        let existe=false;
+        this.arrayJornadas.forEach(element => {
+            if (element.getFechaInicio().toLocaleDateString() ===fechaString){
+                existe=true;
+            }
+        });
+        return existe;
+    }
+
 }
 
 export default ListaJornadas;
