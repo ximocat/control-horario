@@ -54,21 +54,8 @@
           style="width: 30%"
         />
       </div>
-      <!-- Chip para la duración de la jornada actual -->
-      <div class="row justify-center q-gutter-xs">
-        <q-chip outline color="primary" text-color="white" size="md" square>
-          Tiempo Jornada: {{ tiempoJornada }}</q-chip
-        >
-      </div>
-      <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
-      <div class="q-gutter-xs">
-        <q-table
-          title="Jornada actual"
-          :data="datosTabla"
-          hide-bottom
-          :rows-per-page-options="[0]"
-        />
-      </div>
+      
+      
     </div>
 
     <div v-show="!entradaPunch" class="q-pa-md q-gutter-sm">
@@ -80,6 +67,7 @@
             type="date"
             stack-label
             label="Dia"
+            @input="existeFechaJornada"
           />
           <q-input
             v-model="horaInicioManual"
@@ -96,26 +84,42 @@
             label="Hora Fin"
           />
           <q-btn
-            @click=""
-            icon="add_circle"
+            @click="addIntervalo"
+            
             label="Añadir Intervalo"
             stack
             glossy
             color="primary"
             style="width: 44%"
+            :disabled="!activarBotonesManual"
           />
           <q-btn
-            @click=""
-            icon="stop_circle"
+            @click="finalizarJornada"
             label="Finalizar Jornada"
             stack
             glossy
             color="red"
             style="width: 44%"
+            :disabled="!activarBotonesManual"
           />
         </div>
       </div>
     </div>
+    <!-- Chip para la duración de la jornada actual -->
+      <div class="row justify-center q-gutter-xs">
+        <q-chip outline color="primary" text-color="white" size="md" square>
+          Tiempo Jornada: {{ tiempoJornada }}</q-chip
+        >
+      </div>
+    <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
+      <div class="q-gutter-xs">
+        <q-table
+          title="Jornada actual"
+          :data="datosTabla"
+          hide-bottom
+          :rows-per-page-options="[0]"
+        />
+      </div>
   </div>
 </template>
 
@@ -144,9 +148,11 @@ export default {
       jornadaActual: null, //Contiene la instancia de la jornada actual
       arrayJornadas: new ListaJornadas(), //Contiene la instancia de la clase ListaJornadas
       entradaPunch: true, //Indica si la entrada de datos será punch (true) o manual (false)
+      //Fecha y horas para entrada manual
       fechaManual: null,
       horaInicioManual: null,
       horaFinManual: null,
+
     };
   },
   //********************
@@ -233,6 +239,12 @@ export default {
     tiempoJornada: function () {
       return this.jornadaActual.getDuracionJornada();
     },
+
+    //Variable calculada para saber si tenemos que activar los botones para
+    //el registro manual de la jornada
+    activarBotonesManual: function(){
+      return (this.fechaManual!==null && this.horaInicioManual !==null && this.horaFinManual!==null);
+    }
   },
 
   //********************
@@ -272,11 +284,37 @@ export default {
       this.arrayJornadas.addJornada(this.jornadaActual);
       this.jornadaActual = null; //Borra la jornada actual
       this.jornadaActual = new JornadaTrabajo(); //Instancio una nueva jornada
+      //Borro los inputs de entrada manual
+      this.fechaManual=null;
+      this.horaInicioManual=null;
+      this.horaFinManual=null;
     },
     //Obtiene la fecha actual
     actualizarFecha: function () {
       this.fechaActual = new Date();
     },
+    //Comprueba si la fecha seleccionada manualmente ya tiene jornada asignada y
+    //muestra mensaje de error
+    existeFechaJornada: function(){
+      let respuesta= this.arrayJornadas.existeJornada(new Date(this.fechaManual).toLocaleDateString());
+      if (respuesta){
+        alert("Ya existe la jornada del " + this.fechaManual + ". Si deseas cambiarla ve al apartado 'EDITAR JORNADAS'");
+        this.fechaManual=null;
+      }
+    },
+
+    //Añade un intervalo en el metodo de entrada manual
+    addIntervalo: function(){
+      let fechaI = new Date(this.fechaManual + ' ' + this.horaInicioManual);
+      let fechaF = new Date(this.fechaManual + ' ' + this.horaFinManual);
+      this.intervaloActual = new IntervaloJornada(fechaI, fechaF);
+      this.jornadaActual.addIntervaloJornada(this.intervaloActual);
+      this.intervaloActual = null; //Borra el intervalo actual
+      //Borro los inputs de entrada manual
+      this.fechaManual=null;
+      this.horaInicioManual=null;
+      this.horaFinManual=null;
+    }
   },
 
   //********************
@@ -296,5 +334,6 @@ export default {
     //Se borra el temporizador antes de destruir la instancia de Vue
     clearTimeout(this.timer);
   },
+
 };
 </script>
