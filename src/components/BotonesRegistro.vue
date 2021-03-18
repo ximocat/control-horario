@@ -30,7 +30,6 @@
           stack
           glossy
           color="primary"
-          id="btnInicio"
           :disabled="!activarBtnInicio"
           style="width: 30%"
         />
@@ -41,7 +40,6 @@
           stack
           glossy
           color="red"
-          id="btnFin"
           :disabled="!activarBtnPausa"
           style="width: 30%"
         />
@@ -52,7 +50,6 @@
           stack
           glossy
           color="red"
-          id="btnFin"
           :disabled="!activarBtnFin"
           style="width: 30%"
         />
@@ -77,17 +74,45 @@
     <div v-show="!entradaPunch" class="q-pa-md q-gutter-sm">
       <div class="q-pa-md">
         <div class="q-gutter-md" style="max-width: 300px">
-          <q-input @click="prueba" filled v-model="entradaPunch" label="Dia" />
-          <q-input outlined v-model="entradaPunch" label="Hora Inicio" />
-          <q-input outlined v-model="entradaPunch" label="Hora Fin" />
-        </div>
-        <div class="row justify-center q-gutter-sm">
-          <q-btn round color="primary" icon="add" />
-        </div>
-        <div class="q-pa-md">
-          <div class="q-gutter-md row">
-            <q-datetime-picker v-model="date" type="datetime"/>
-          </div>
+          <q-input
+            v-model="fechaManual"
+            filled
+            type="date"
+            stack-label
+            label="Dia"
+          />
+          <q-input
+            v-model="horaInicioManual"
+            outlined
+            type="time"
+            stack-label
+            label="Hora Inicio"
+          />
+          <q-input
+            v-model="horaFinManual"
+            outlined
+            type="time"
+            stack-label
+            label="Hora Fin"
+          />
+          <q-btn
+            @click=""
+            icon="add_circle"
+            label="Añadir Intervalo"
+            stack
+            glossy
+            color="primary"
+            style="width: 44%"
+          />
+          <q-btn
+            @click=""
+            icon="stop_circle"
+            label="Finalizar Jornada"
+            stack
+            glossy
+            color="red"
+            style="width: 44%"
+          />
         </div>
       </div>
     </div>
@@ -119,7 +144,9 @@ export default {
       jornadaActual: null, //Contiene la instancia de la jornada actual
       arrayJornadas: new ListaJornadas(), //Contiene la instancia de la clase ListaJornadas
       entradaPunch: true, //Indica si la entrada de datos será punch (true) o manual (false)
-      date: null,
+      fechaManual: null,
+      horaInicioManual: null,
+      horaFinManual: null,
     };
   },
   //********************
