@@ -30,6 +30,11 @@ class JornadaTrabajo {
         return this.arrayIntervalos;
     }
 
+    //Metodo que devuelve la fecha de inicio del primer intervalo de la jornada
+    getFechaInicio(){
+        return this.arrayIntervalos[0].getFechaInicio();
+    }
+
 }
 
 export default JornadaTrabajo;
