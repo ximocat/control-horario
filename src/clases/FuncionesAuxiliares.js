@@ -1,8 +1,20 @@
 class FuncionesAuxiliares {
-    //Funcion estática para guardar en localStorage los datos
-    static guardarLocalStorage() {
-        alert("hola auxiliar")
-        //localStorage.setItem("jornadas",JSON.stringify())
+    //Funcion estática para guardar en localStorage los datos que pasamos por
+    //parametro y que en nuestro caso será un objeto ListaJornadas
+    static guardarLocalStorage(objetoJornadas) {
+        localStorage.setItem("jornadas",JSON.stringify(objetoJornadas))
+    }
+
+    //Funcion estática para  leer los datos de localStorage. Retorna el objeto
+    //que en nuestro caso será un listaJornadas
+    static leerLocalStorage(){
+        if(!localStorage["jornadas"]){//Si no existe en localStorage->alert
+            alert("No hay datos guardados");
+            return false;
+        }else{
+            let objetoJornadas=JSON.parse(localStorage.getItem("jornadas"));
+            return objetoJornadas;
+        }
     }
 
     //Función estática que devuelve los segundos que hay entre dos objetos Date
