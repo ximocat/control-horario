@@ -1,10 +1,10 @@
 <template>
     <q-page>
-        <botones-registro></botones-registro>
+        <tabla-jornadas/>
     </q-page>
 </template>
 <script>
-import BotonesRegistro from 'src/components/BotonesRegistro.vue';
+import TablaJornadas from 'src/components/TablaJornadas.vue';
 export default {
     name: "PageIndex",
   
@@ -19,7 +19,7 @@ export default {
 
     },
     components: {
-        'botones-registro': BotonesRegistro
+        'tabla-jornadas': TablaJornadas
     }
 };
 </script>
