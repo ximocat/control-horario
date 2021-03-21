@@ -1,12 +1,17 @@
 <template>
-  <div class="q-pa-md q-gutter-sm">
-    <q-table
-      title="Jornadas"
-      :data="data"
-      :columns="columns"
-      row-key="name"
-    />
-  </div>
+ 
+<!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
+      <div class="q-gutter-xs">
+        <q-table
+          title="Jornadas"
+          :data="datosTabla"
+          hide-bottom
+          :rows-per-page-options="[0]"
+        />
+      </div>
+
+
+
 </template>
 
 <script>
@@ -22,37 +27,7 @@ export default {
   //********************
   data: function () {
     return {
-      columns: [
-        {
-          name: 'name',
-          required: true,
-          label: 'Fecha',
-          align: 'left',
-          field: row => row.name,
-          format: val => `${val}`,
-          sortable: true
-        },
-        { name: 'horas', align: 'center', label: 'Horas', field: 'horas', sortable: true },
-      ],
-      data: [
-        {
-          name: 'Frozen Yogurt',
-          horas: 159,
-        },
-        {
-          name: 'Ice cream sandwich',
-          horas: 237,
-        },
-        {
-          name: 'Eclair',
-          horas: 262,
-        },
-        {
-          name: 'Cupcake',
-          horas: 305,
-        }
-      ]
-      
+     
       
     };
   },
@@ -60,6 +35,23 @@ export default {
   //Variables calculadas
   //********************
   computed: {
+    //Contiene los datos para actulizar la tabla de intervalos de jornada
+    datosTabla: function () {
+      let vector = []; //Vector que usaremos para devolver el resultado
+
+      
+      for (let i = 0; i < ListaJornadas.app.arrayJornadas.length; i++) {
+        vector.push({
+          inicio:
+            ListaJornadas.app.arrayJornadas[i].arrayIntervalos[0].fechaInicio,
+          fin: 
+            ListaJornadas.app.arrayJornadas[i].arrayIntervalos[0].fechaFin
+        });
+      }
+      
+
+      return vector;
+    },
     
   },
 
@@ -69,6 +61,10 @@ export default {
   methods: {
     
   },
+
+  created: function(){
+    console.log(ListaJornadas.app);
+  }
 
   
 };
