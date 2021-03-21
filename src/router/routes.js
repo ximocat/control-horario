@@ -4,7 +4,12 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IntroJornada.vue') }
+      { path: '', component: () => import('pages/IntroJornada.vue') },
+      { path: 'IntroJornada', component: () => import('pages/IntroJornada.vue') }, 
+      { path: 'EditJornadas', component: () => import('pages/EditJornadas.vue') },
+      { path: 'Estadisticas', component: () => import('pages/Estadisticas.vue') },
+      { path: 'Importar', component: () => import('pages/Importar.vue') },
+      { path: 'About', component: () => import('pages/About.vue') },
     ]
   },
 
