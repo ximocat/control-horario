@@ -94,7 +94,7 @@
             :disabled="!activarBotonesManual"
           />
           <q-btn
-            @click="finalizarJornada"
+            @click="finalizarJornadaManual"
             label="Finalizar Jornada"
             stack
             glossy
@@ -146,7 +146,7 @@ export default {
       timer: null, //Timer para poder representar la hora actual en pantalla
       intervaloActual: null, //Contiene la instancia del intervalo de tiempo actual
       jornadaActual: null, //Contiene la instancia de la jornada actual
-      arrayJornadas: new ListaJornadas(), //Contiene la instancia de la clase ListaJornadas
+      //arrayJornadas: ListaJornadas.app, //Contiene la instancia de la clase ListaJornadas
       entradaPunch: true, //Indica si la entrada de datos será punch (true) o manual (false)
       //Fecha y horas para entrada manual
       fechaManual: null,
@@ -281,7 +281,7 @@ export default {
         this.jornadaActual.addIntervaloJornada(this.intervaloActual);
         this.intervaloActual = null; //Borra el intervalo actual
       }
-      this.arrayJornadas.addJornada(this.jornadaActual);
+      ListaJornadas.app.addJornada(this.jornadaActual);
       this.jornadaActual = null; //Borra la jornada actual
       this.jornadaActual = new JornadaTrabajo(); //Instancio una nueva jornada
       //Borro los inputs de entrada manual
@@ -289,16 +289,22 @@ export default {
       this.horaInicioManual=null;
       this.horaFinManual=null;
       //Guardamos en localStorage la lista de Jornadas
-      FuncionesAuxiliares.guardarLocalStorage(this.arrayJornadas);
+      FuncionesAuxiliares.guardarLocalStorage();
     },
     //Obtiene la fecha actual
     actualizarFecha: function () {
       this.fechaActual = new Date();
     },
+    //
+    finalizarJornadaManual(){
+      this.addIntervalo();
+      this.finalizarJornada();
+    },
+
     //Comprueba si la fecha seleccionada manualmente ya tiene jornada asignada y
     //muestra mensaje de error
     existeFechaJornada: function(){
-      let respuesta= this.arrayJornadas.existeJornada(new Date(this.fechaManual).toLocaleDateString());
+      let respuesta= ListaJornadas.app.existeJornada(new Date(this.fechaManual).toLocaleDateString());
       if (respuesta){
         alert("Ya existe la jornada del " + this.fechaManual + ". Si deseas cambiarla ve al apartado 'EDITAR JORNADAS'");
         this.fechaManual=null;
@@ -330,11 +336,7 @@ export default {
   mounted: function () {
     //Se establece un temporizador para actulizar la fechaActual
     this.timer = setInterval(this.actualizarFecha, 1000);
-    //Restauro de localStorage la lista de jornadas
-    let datos=FuncionesAuxiliares.leerLocalStorage();
-    for (let i=0; i<datos.arrayJornadas.length; i++){
-      this.arrayJornadas.addJornada(datos.arrayJornadas[i]);
-    }
+    
   },
   beforeDestroy: function () {
     //
