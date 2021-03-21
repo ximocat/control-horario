@@ -1,19 +1,21 @@
+import ListaJornadas from "./ListaJornadas";
+
 class FuncionesAuxiliares {
-    //Funcion estática para guardar en localStorage los datos que pasamos por
-    //parametro y que en nuestro caso será un objeto ListaJornadas
-    static guardarLocalStorage(objetoJornadas) {
-        localStorage.setItem("jornadas",JSON.stringify(objetoJornadas))
+    //Funcion estática para guardar en localStorage la variable ListaJornadas.app
+    static guardarLocalStorage() {
+        localStorage.setItem("jornadas", JSON.stringify(ListaJornadas.app))
+        this.leerLocalStorage();
     }
 
-    //Funcion estática para  leer los datos de localStorage. Retorna el objeto
-    //que en nuestro caso será un listaJornadas
-    static leerLocalStorage(){
-        if(!localStorage["jornadas"]){//Si no existe en localStorage->alert
-            alert("Inicializando Base de datos");
-            return false;
-        }else{
-            let objetoJornadas=JSON.parse(localStorage.getItem("jornadas"));
-            return objetoJornadas;
+    //Funcion estática para  leer los datos de localStorage
+    static leerLocalStorage() {
+        ListaJornadas.app = new ListaJornadas();
+        if (localStorage["jornadas"]) {//Si existe en localStorage
+            let datos = JSON.parse(localStorage.getItem("jornadas"));
+            for (let i = 0; i < datos.arrayJornadas.length; i++) {
+                ListaJornadas.app.addJornada(datos.arrayJornadas[i]);
+                
+            }
         }
     }
 
@@ -46,7 +48,7 @@ class FuncionesAuxiliares {
         let d2 = duracion2.split(":");
         //Paso la suma de ambos a segundos
         let segundos = 3600 * (parseInt(d1[0]) + parseInt(d2[0])) +
-            60 * (parseInt(d1[1]) + parseInt(d2[1])) + 
+            60 * (parseInt(d1[1]) + parseInt(d2[1])) +
             (parseInt(d1[2]) + parseInt(d2[2]));
         //Calculo las horas
         let horas = parseInt(segundos / 3600);
