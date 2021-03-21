@@ -9,7 +9,7 @@ class FuncionesAuxiliares {
     //que en nuestro caso será un listaJornadas
     static leerLocalStorage(){
         if(!localStorage["jornadas"]){//Si no existe en localStorage->alert
-            alert("No hay datos guardados");
+            alert("Inicializando Base de datos");
             return false;
         }else{
             let objetoJornadas=JSON.parse(localStorage.getItem("jornadas"));

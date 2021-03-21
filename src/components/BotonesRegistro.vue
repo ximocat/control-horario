@@ -288,6 +288,8 @@ export default {
       this.fechaManual=null;
       this.horaInicioManual=null;
       this.horaFinManual=null;
+      //Guardamos en localStorage la lista de Jornadas
+      FuncionesAuxiliares.guardarLocalStorage(this.arrayJornadas);
     },
     //Obtiene la fecha actual
     actualizarFecha: function () {
@@ -328,6 +330,11 @@ export default {
   mounted: function () {
     //Se establece un temporizador para actulizar la fechaActual
     this.timer = setInterval(this.actualizarFecha, 1000);
+    //Restauro de localStorage la lista de jornadas
+    let datos=FuncionesAuxiliares.leerLocalStorage();
+    for (let i=0; i<datos.arrayJornadas.length; i++){
+      this.arrayJornadas.addJornada(datos.arrayJornadas[i]);
+    }
   },
   beforeDestroy: function () {
     //
