@@ -91,6 +91,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import FuncionesAuxiliares from 'src/clases/FuncionesAuxiliares'
 export default {
   name: 'MainLayout',
   //components: { EssentialLink },
@@ -99,6 +100,10 @@ export default {
       leftDrawerOpen: false,
     //  essentialLinks: linksData
     }
+  },
+
+  mounted(){
+    FuncionesAuxiliares.leerLocalStorage();
   }
 }
 </script>
