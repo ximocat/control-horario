@@ -13,11 +13,11 @@ class ListaJornadas{
     //Método que comprueba si existe una jornada
     existeJornada(fechaString){
         let existe=false;
-        this.arrayJornadas.forEach(element => {
-            if (element.getFechaInicio().toLocaleDateString() ===fechaString){
+        for (let i=0; i<this.arrayJornadas.length;i++){
+            if (this.arrayJornadas[i].getFechaInicio().toLocaleDateString() === fechaString){
                 existe=true;
             }
-        });
+        }
         return existe;
     }
 
