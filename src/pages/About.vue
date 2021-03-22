@@ -11,7 +11,7 @@
     </q-page>
 </template>
 <script>
-import BotonesRegistro from 'src/components/BotonesRegistro.vue';
+
 export default {
     name: "PageIndex",
   
@@ -26,7 +26,7 @@ export default {
 
     },
     components: {
-        'botones-registro': BotonesRegistro
+        
     }
 };
 </script>

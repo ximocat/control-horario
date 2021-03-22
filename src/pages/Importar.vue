@@ -1,6 +1,6 @@
 <template>
     <q-page>
-        <botones-registro></botones-registro>
+        
     </q-page>
 </template>
 <script>
@@ -19,7 +19,7 @@ export default {
 
     },
     components: {
-        'botones-registro': BotonesRegistro
+        
     }
 };
 </script>
