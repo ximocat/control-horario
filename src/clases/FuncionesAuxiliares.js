@@ -1,3 +1,4 @@
+import IntervaloJornada from "./IntervaloJornada";
 import ListaJornadas from "./ListaJornadas";
 
 class FuncionesAuxiliares {
@@ -84,6 +85,27 @@ class FuncionesAuxiliares {
     //devuelve la fecha en un string de tipo dd/mm/aaaa
     static pasarAfecha(objetoDate) {
         return objetoDate.toLocaleDateString();
+    }
+
+    //Funcion estática para retornar la fecha en formato yyyymmdd
+    static obtenerFecha(objetoDate){
+        return  objetoDate.getFullYear() + this.formatearDosCaracteres(objetoDate.getMonth()) + this.formatearDosCaracteres(objetoDate.getDate());
+    }
+
+    //Funcion estatica que retorna un objeto ListaJornadas a partir del localStorage
+    static localStorageToObject(){
+        let objListaJornadas=new ListaJornadas();
+        for (let i=0; i<ListaJornadas.app.arrayJornadas.length;i++){
+            let objJornada=new JornadaTrabajo();
+            for (let j=0; j<ListaJornadas.app.arrayJornadas[i].arrayIntervalos.length; j++){
+                let objIntervalo= new IntervaloJornada(
+                    new Date(ListaJornadas.app.arrayJornadas[i].arrayIntervalos[j].fechaInicio),
+                    new Date(ListaJornadas.app.arrayJornadas[i].arrayIntervalos[j].fechaFin));
+                objJornada.addIntervaloJornada(objIntervalo);
+            }
+            objListaJornadas.addJornada(objJornada);
+        }
+        return objListaJornadas;    
     }
 
 }
