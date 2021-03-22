@@ -17,9 +17,7 @@ export default {
   
         data() {
             return{
-                etiqueta: '',
-                texto: '',
-                model: '',
+
             };
     },
     methods: {
