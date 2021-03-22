@@ -1,17 +1,13 @@
 <template>
- 
-<!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
-      <div class="q-gutter-xs">
-        <q-table
-          title="Jornadas"
-          :data="datosTabla"
-          hide-bottom
-          :rows-per-page-options="[0]"
-        />
-      </div>
-
-
-
+  <!-- Tabla con los diferentes intervalos de tiempo de la jornada actual -->
+  <div class="q-gutter-xs">
+    <q-table
+      title="Jornadas"
+      :data="datosTabla"
+      hide-bottom
+      :rows-per-page-options="[0]"
+    />
+  </div>
 </template>
 
 <script>
@@ -26,10 +22,7 @@ export default {
   //Variables reactivas
   //********************
   data: function () {
-    return {
-     
-      
-    };
+    return {};
   },
   //********************
   //Variables calculadas
@@ -38,34 +31,44 @@ export default {
     //Contiene los datos para actulizar la tabla de intervalos de jornada
     datosTabla: function () {
       let vector = []; //Vector que usaremos para devolver el resultado
-
-      
+      console.log(ListaJornadas.app);
       for (let i = 0; i < ListaJornadas.app.arrayJornadas.length; i++) {
         vector.push({
-          inicio:
-            ListaJornadas.app.arrayJornadas[i].arrayIntervalos[0].fechaInicio,
-          fin: 
-            ListaJornadas.app.arrayJornadas[i].arrayIntervalos[0].fechaFin
+          inicio: 
+            FuncionesAuxiliares.obtenerFecha(
+              new Date(ListaJornadas.app.arrayJornadas[i].arrayIntervalos[0].fechaInicio)),
+          intervalos: 
+            ListaJornadas.app.arrayJornadas[i].arrayIntervalos.length,
+          duracion:
+            this.calcularDuracionJornada(ListaJornadas.app.arrayJornadas[i])
         });
       }
-      
 
       return vector;
     },
-    
   },
 
   //********************
   // Métodos
   //********************
   methods: {
-    
+    calcularDuracionJornada: function (objetoJornada) {
+      
+      let jornada=new JornadaTrabajo();
+      console.log(objetoJornada.arrayIntervalos.length);
+      for (let i = 0;i < objetoJornada.arrayIntervalos.length; i++) {
+        jornada.addIntervaloJornada(
+          new IntervaloJornada(new Date(objetoJornada.arrayIntervalos[i].fechaInicio),
+          new Date(objetoJornada.arrayIntervalos[i].fechaFin)));
+      }
+      console.log(jornada);
+      return jornada.getDuracionJornada();
+      
+    },
   },
 
-  created: function(){
-    console.log(ListaJornadas.app);
-  }
-
-  
+  created: function () {
+    //console.log(ListaJornadas.app);
+  },
 };
 </script>
