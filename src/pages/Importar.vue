@@ -24,6 +24,8 @@
 </template>
 <script>
 import FuncionesAuxiliares from "src/clases/FuncionesAuxiliares";
+import ListaJornadas from 'src/clases/ListaJornadas';
+
 export default {
   name: "PageIndex",
   data() {
@@ -41,12 +43,13 @@ export default {
       }
     },
     exportarCSV: function(){
-        
+        FuncionesAuxiliares.exportCSVFile(false, ListaJornadas.app,"jornadas")
     },
     importarCSV: function(){
 
-    }
-  },
-  components: {},
+    },
+
+    
+  }
 };
 </script>
