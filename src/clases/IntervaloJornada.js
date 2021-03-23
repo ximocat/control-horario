@@ -10,9 +10,27 @@ class IntervaloJornada {
     getFechaInicio() {
         return this.fechaInicio;
     }
+
+    getFechaInicioAfecha(){
+        return FuncionesAuxiliares.pasarAfecha(this.fechaInicio);
+    }
+
+    getFechaInicioAhora(){
+        return FuncionesAuxiliares.pasarAhora(this.fechaInicio);
+    }
+
     getFechaFin() {
         return this.fechaFin;
     }
+
+    getFechaFinAfecha(){
+        return FuncionesAuxiliares.pasarAfecha(this.fechaFin);
+    }
+
+    getFechaFinAhora(){
+        return FuncionesAuxiliares.pasarAhora(this.fechaFin);
+    }
+
     setFechaInicio(fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
