@@ -33,14 +33,15 @@
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td auto-width>
-            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
-            <q-btn size="sm" color="red" round dense @click="borrar" icon="delete" />  
+            <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" />
+            <q-btn size="sm" color="red" round dense @click="borrarJornada(props.key)" icon="delete" />  
           </q-td>
           <q-td
             v-for="col in props.cols"
             :key="col.name"
             :props="props"
           >
+          
             {{ col.value }}
           </q-td>
           
@@ -49,9 +50,9 @@
           <q-td colspan="100%">
             <div class="text-left">
               <q-tr>
-                <q-td v-for="inter in jornadas[4]">
+                <q-td v-for="inter in jornadas.arrayJornadas[props.rowIndex]">
                   <q-tr v-for="i in inter">
-                    <q-td @click="borrar(i)">
+                    <q-td>
                       {{ i.getFechaInicioAfecha() }} {{ i.getFechaInicioAhora() }} ---
                       {{ i.getFechaFinAfecha() }} {{ i.getFechaFinAhora() }}
                        [{{ i.getTiempoIntervaloString() }}]
@@ -82,7 +83,7 @@ export default {
   //********************
   data: function () {
     return {
-      jornadas: ListaJornadas.app.arrayJornadas,
+      jornadas: ListaJornadas.app,
 
     };
   },
@@ -96,7 +97,7 @@ export default {
       for (let i = 0; i < ListaJornadas.app.arrayJornadas.length; i++) {
         vector.push({
           inicio: 
-            FuncionesAuxiliares.obtenerFecha(ListaJornadas.app.arrayJornadas[i].arrayIntervalos[0].getFechaInicio()),
+            FuncionesAuxiliares.obtenerFecha(ListaJornadas.app.arrayJornadas[i].getFechaInicio()),
           inter: 
             ListaJornadas.app.arrayJornadas[i].arrayIntervalos.length,
           duracion:
@@ -112,9 +113,10 @@ export default {
   // Métodos
   //********************
   methods: {
-    borrar: function(i){
-      
-      alert(i.getTiempoIntervaloString())
+    //Metodo para borrar una jornada de la lista de jornadas, se le pasa como
+    //argumento la fecha de inicio de la jornada en formato YYYYMMDD
+    borrarJornada: function(jornada){
+      this.jornadas.borrarJornada(jornada);
     }
   },
 
