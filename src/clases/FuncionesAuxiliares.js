@@ -91,7 +91,7 @@ class FuncionesAuxiliares {
 
     //Funcion estática para retornar la fecha en formato yyyymmdd
     static obtenerFecha(objetoDate){
-        return  objetoDate.getFullYear() + this.formatearDosCaracteres(objetoDate.getMonth()) + this.formatearDosCaracteres(objetoDate.getDate());
+        return  objetoDate.getFullYear() + this.formatearDosCaracteres(1+objetoDate.getMonth()) + this.formatearDosCaracteres(objetoDate.getDate());
     }
 
     //Funcion estatica para leer el localStorage
