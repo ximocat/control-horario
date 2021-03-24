@@ -44,6 +44,65 @@ class ListaJornadas{
         return indice;
     }
 
+    //Metodo que me devuelve un string tipo "hh:mm:ss" con las horas de las 
+    //jornadas de la semana actual
+    calcularHorasSemana(){
+        let cont="00:00:00";
+        let hoyDate=new Date();
+        let offsetComienzoSemana;
+        if (hoyDate.getDay()===0){//Si es domingo
+            offsetComienzoSemana=6;
+        }else{//Para el resto de casos
+            offsetComienzoSemana=hoyDate.getDay()-1;
+        }
+        
+        //Fecha de iniciod e la semana en formato enteros de tipo YYYYMMDD
+        let diaComienzoSemana=parseInt(FuncionesAuxiliares.obtenerFecha(new Date( hoyDate- 24*3600*1000*offsetComienzoSemana)));
+        let diaSuma; //Dia a sumar sus horas
+        for (let i=0; i< this.arrayJornadas.length; i++){
+            diaSuma=parseInt(FuncionesAuxiliares.obtenerFecha(this.arrayJornadas[i].arrayIntervalos[0].getFechaInicio()));
+            if (diaSuma>=diaComienzoSemana && (diaSuma-diaComienzoSemana) < 7){
+                cont=FuncionesAuxiliares.sumaDuracionesString(cont,this.arrayJornadas[i].getDuracionJornada());
+            }
+        }
+        return cont;
+    }
+
+    //Metodo que me devuelve un string tipo "hh:mm:ss" con las horas de las
+    //jornadas del mes actual
+    calcularHorasMes(){
+        let cont="00:00:00";
+        //Hoy en formato string YYYYMMDD
+        let hoy=FuncionesAuxiliares.obtenerFecha(new Date());
+        let mes=hoy.substring(0,5);//Obtengo los 6 primeros caracteres de hoy, es decir YYYYMM
+        let diaSuma;
+        for (let i=0; i < this.arrayJornadas.length; i++){
+            diaSuma=FuncionesAuxiliares.obtenerFecha(this.arrayJornadas[i].arrayIntervalos[0].getFechaInicio());
+            if (diaSuma.substring(0,5)===mes){
+                cont=FuncionesAuxiliares.sumaDuracionesString(cont,this.arrayJornadas[i].getDuracionJornada());
+            }
+        }
+        return cont;
+    }
+
+
+    //Metodo que me devuelve un string tipo "hh:mm:ss" con las horas de las
+    //jornadas del año actual
+    calcularHorasAnyo(){
+        let cont="00:00:00";
+        //Hoy en formato string YYYYMMDD
+        let hoy=FuncionesAuxiliares.obtenerFecha(new Date());
+        let anyo=hoy.substring(0,3);//Obtengo los 4 primeros caracteres de hoy, es decir YYYY
+        let diaSuma;
+        for (let i=0; i < this.arrayJornadas.length; i++){
+            diaSuma=FuncionesAuxiliares.obtenerFecha(this.arrayJornadas[i].arrayIntervalos[0].getFechaInicio());
+            if (diaSuma.substring(0,3)===anyo){
+                cont=FuncionesAuxiliares.sumaDuracionesString(cont,this.arrayJornadas[i].getDuracionJornada());
+            }
+        }
+        return cont;
+    }
+
 }
 
 export default ListaJornadas;
