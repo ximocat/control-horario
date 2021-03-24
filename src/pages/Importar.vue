@@ -46,6 +46,7 @@ export default {
         FuncionesAuxiliares.exportar(ListaJornadas.app)
     },
     importarArchivo: function(){
+        FuncionesAuxiliares.importar()
 
     },
 

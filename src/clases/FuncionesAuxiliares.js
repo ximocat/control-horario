@@ -109,7 +109,7 @@ class FuncionesAuxiliares {
             ListaJornadas.app.addJornada(objJornada);
         }
     }
-
+    //Funcion para exportar un objeto pasado como parámetro a un archivo JSON
     static exportar(objeto){
         let str= JSON.stringify(objeto);
         let fecha = this.obtenerFecha(new Date());
@@ -134,13 +134,11 @@ class FuncionesAuxiliares {
     }
 
     static importar(){
-        let str= JSON.stringify(objeto);
-        let fecha = this.obtenerFecha(new Date());
-        const nombreArchivo = "export_"+fecha+".json";
-
-        const blob = new Blob([str], {type: "application/json" });
-        
-        if (navigator.msSaveBlob) {
+        alert("Tendrás que esperar");
+        let str="Hola";
+        /* const blob = new Blob([str], {type: "application/json" });
+        navigator.msSaveOrOpenBlob(blob,"export_20210324.json"); */
+        /* if (navigator.msSaveBlob) {
             navigator.msSaveBlob(blob, nombreArchivo);
         } else {
             const link = document.createElement("a");
@@ -153,7 +151,7 @@ class FuncionesAuxiliares {
                 link.click();
                 document.body.removeChild(link);
             }
-        }
+        } */
     }
 
 
