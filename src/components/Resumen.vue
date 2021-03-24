@@ -49,12 +49,12 @@ export default {
   //Variables calculadas
   //********************
   computed: {
-    horasSemanales: function(){
+/*     horasSemanales: function(){
       return this.jornadas.calcularHorasSemana();
     },
     horasMensuales: function(){
       return this.jorndas.calcularHorasMes();
-    },
+    }, */
 
     horas: function(){
       if (this.tab==="semanal") return this.jornadas.calcularHorasSemana();
