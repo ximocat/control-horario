@@ -11,16 +11,16 @@ class FuncionesAuxiliares {
     }
 
     //Funcion estática para  leer los datos de localStorage
-   /*  static leerLocalStorage() {
-        ListaJornadas.app = new ListaJornadas();
-        if (localStorage["jornadas"]) {//Si existe en localStorage
-            let datos = JSON.parse(localStorage.getItem("jornadas"));
-            for (let i = 0; i < datos.arrayJornadas.length; i++) {
-                ListaJornadas.app.addJornada(datos.arrayJornadas[i]);
-                
-            }
-        }
-    } */
+    /*  static leerLocalStorage() {
+         ListaJornadas.app = new ListaJornadas();
+         if (localStorage["jornadas"]) {//Si existe en localStorage
+             let datos = JSON.parse(localStorage.getItem("jornadas"));
+             for (let i = 0; i < datos.arrayJornadas.length; i++) {
+                 ListaJornadas.app.addJornada(datos.arrayJornadas[i]);
+                 
+             }
+         }
+     } */
 
     //Función estática que devuelve los segundos que hay entre dos objetos Date
     //pasados como parámetros
@@ -90,18 +90,18 @@ class FuncionesAuxiliares {
     }
 
     //Funcion estática para retornar la fecha en formato yyyymmdd
-    static obtenerFecha(objetoDate){
-        return  objetoDate.getFullYear() + this.formatearDosCaracteres(1+objetoDate.getMonth()) + this.formatearDosCaracteres(objetoDate.getDate());
+    static obtenerFecha(objetoDate) {
+        return objetoDate.getFullYear() + this.formatearDosCaracteres(1 + objetoDate.getMonth()) + this.formatearDosCaracteres(objetoDate.getDate());
     }
 
     //Funcion estatica para leer el localStorage
-    static leerLocalStorage(){
-        ListaJornadas.app=new ListaJornadas();
+    static leerLocalStorage() {
+        ListaJornadas.app = new ListaJornadas();
         let datos = JSON.parse(localStorage.getItem("jornadas"));
-        for (let i=0; i<datos.arrayJornadas.length;i++){
-            let objJornada=new JornadaTrabajo();
-            for (let j=0; j<datos.arrayJornadas[i].arrayIntervalos.length; j++){
-                let objIntervalo= new IntervaloJornada(
+        for (let i = 0; i < datos.arrayJornadas.length; i++) {
+            let objJornada = new JornadaTrabajo();
+            for (let j = 0; j < datos.arrayJornadas[i].arrayIntervalos.length; j++) {
+                let objIntervalo = new IntervaloJornada(
                     new Date(datos.arrayJornadas[i].arrayIntervalos[j].fechaInicio),
                     new Date(datos.arrayJornadas[i].arrayIntervalos[j].fechaFin));
                 objJornada.addIntervaloJornada(objIntervalo);
@@ -110,49 +110,51 @@ class FuncionesAuxiliares {
         }
     }
 
-    static convertToCSV(objArray){
-        const array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
-        let str = "";
-        for (let i = 0; i < array.length; i++) {
-            let line = "";
-            for (let index in array[i]) {
-             if (line != "") line += ",";
-          line += array[i][index];
-            }
-          str += line + "\r\n";
-           }
-          return str;
+    static exportar(objeto){
+        let str= JSON.stringify(objeto);
+        let fecha = this.obtenerFecha(new Date());
+        const nombreArchivo = "export_"+fecha+".json";
 
+        const blob = new Blob([str], {type: "application/json" });
+        
+        if (navigator.msSaveBlob) {
+            navigator.msSaveBlob(blob, nombreArchivo);
+        } else {
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", nombreArchivo);
+                link.style.visibility = "hidden";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
     }
 
+    static importar(){
+        let str= JSON.stringify(objeto);
+        let fecha = this.obtenerFecha(new Date());
+        const nombreArchivo = "export_"+fecha+".json";
 
-    static exportCSVFile(headers, items, fileName) {
+        const blob = new Blob([str], {type: "application/json" });
         
-        if (headers) {
-         items.unshift(headers);
-        }
-       const jsonObject = JSON.stringify(items);
-       const csv = this.convertToCSV(jsonObject);
-       const exportName = fileName + ".csv" || "export.csv";
-       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
         if (navigator.msSaveBlob) {
-         navigator.msSaveBlob(blob, exportName);
+            navigator.msSaveBlob(blob, nombreArchivo);
         } else {
-         const link = document.createElement("a");
-         if (link.download !== undefined) {
-          const url = URL.createObjectURL(blob);
-          link.setAttribute("href", url);
-          link.setAttribute("download", exportName);
-          link.style.visibility = "hidden";
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-         }
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", nombreArchivo);
+                link.style.visibility = "hidden";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         }
-       }
-
-
-   
+    }
 
 
 
