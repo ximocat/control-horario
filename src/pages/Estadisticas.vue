@@ -1,9 +1,11 @@
 <template>
     <q-page>
-        <botones-registro></botones-registro>
+        <resumen/>
     </q-page>
 </template>
 <script>
+
+import Resumen from 'src/components/Resumen.vue'
 
 export default {
     name: "PageIndex",
@@ -17,6 +19,7 @@ export default {
 
     },
     components: {
+        'resumen': Resumen
         
     }
 };
