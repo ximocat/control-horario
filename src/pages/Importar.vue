@@ -5,12 +5,12 @@
     >
       <q-card-section>
         <h6>
-          Para importar/exportar a un archivo CSV que contenga las jornadas
+          Para importar/exportar a un archivo que contenga las jornadas
           pulsa en el botón correspondiente
         </h6>
         <div class="">
-          <q-btn @click="exportarCSV" color="primary" label="Exportar a CSV" />
-          <q-btn @click="importarCSV" color="primary" label="Importar desde CSV" />
+          <q-btn @click="exportarArchivo" color="primary" label="Exportar a archivo" />
+          <q-btn @click="importarArchivo" color="primary" label="Importar desde archivo" />
           <q-space></q-space>
           <q-btn
             @click="borrarLocalStorage"
@@ -42,10 +42,10 @@ export default {
         FuncionesAuxiliares.leerLocalStorage();
       }
     },
-    exportarCSV: function(){
-        FuncionesAuxiliares.exportCSVFile(false, ListaJornadas.app,"jornadas")
+    exportarArchivo: function(){
+        FuncionesAuxiliares.exportar(ListaJornadas.app)
     },
-    importarCSV: function(){
+    importarArchivo: function(){
 
     },
 
