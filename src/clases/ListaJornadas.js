@@ -74,11 +74,12 @@ class ListaJornadas{
         let cont="00:00:00";
         //Hoy en formato string YYYYMMDD
         let hoy=FuncionesAuxiliares.obtenerFecha(new Date());
-        let mes=hoy.substring(0,5);//Obtengo los 6 primeros caracteres de hoy, es decir YYYYMM
+        let mes=hoy.substring(0,6);//Obtengo los 6 primeros caracteres de hoy, es decir YYYYMM
+        
         let diaSuma;
         for (let i=0; i < this.arrayJornadas.length; i++){
             diaSuma=FuncionesAuxiliares.obtenerFecha(this.arrayJornadas[i].arrayIntervalos[0].getFechaInicio());
-            if (diaSuma.substring(0,5)===mes){
+            if (diaSuma.substring(0,6)===mes){
                 cont=FuncionesAuxiliares.sumaDuracionesString(cont,this.arrayJornadas[i].getDuracionJornada());
             }
         }
@@ -92,11 +93,12 @@ class ListaJornadas{
         let cont="00:00:00";
         //Hoy en formato string YYYYMMDD
         let hoy=FuncionesAuxiliares.obtenerFecha(new Date());
-        let anyo=hoy.substring(0,3);//Obtengo los 4 primeros caracteres de hoy, es decir YYYY
+        let anyo=hoy.substring(0,4);//Obtengo los 4 primeros caracteres de hoy, es decir YYYY
+        
         let diaSuma;
         for (let i=0; i < this.arrayJornadas.length; i++){
             diaSuma=FuncionesAuxiliares.obtenerFecha(this.arrayJornadas[i].arrayIntervalos[0].getFechaInicio());
-            if (diaSuma.substring(0,3)===anyo){
+            if (diaSuma.substring(0,4)===anyo){
                 cont=FuncionesAuxiliares.sumaDuracionesString(cont,this.arrayJornadas[i].getDuracionJornada());
             }
         }
