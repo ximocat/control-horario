@@ -73,8 +73,8 @@
             <q-icon name="code"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>Sobre mí</q-item-label>
-            <q-item-label caption>Sobre el autor de la aplicación</q-item-label>
+            <q-item-label>Sobre Control Horario</q-item-label>
+            <q-item-label caption>Sobre la aplicación Control Horario</q-item-label>
           </q-item-section>
         </q-item>
 
