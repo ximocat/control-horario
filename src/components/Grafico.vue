@@ -1,6 +1,6 @@
 <template>
   <div id="chart">
-    <apexchart :options="chartOptions" height="280" :series="series"/>
+    <apexchart :options="chartOptions" height="280" :series="series" />
   </div>
 </template>
 
@@ -17,22 +17,38 @@ export default {
   //Variables reactivas
   //********************
   data: function () {
-    return {
-      
-
-      chartOptions: {
-        colors: ['#00F','#F00','#0F0'],
+    return {};
+  },
+  //********************
+  //Variables calculadas
+  //********************
+  computed: {
+    series: function () {
+      switch (this.$parent.tab) {
+        case "semanal":
+          return this.$parent.jornadas.obtenerDatosGraficaSemanal();
+        case "mensual":
+          return this.$parent.jornadas.obtenerDatosGraficaSemanal();
+        case "anual":
+          return this.$parent.jornadas.obtenerDatosGraficaSemanal();
+        default:
+          console.log("Algo ha fallado");
+          return null;
+      }
+    },
+    chartOptions: function () {
+      return {
+        colors: ["#00F", "#F00", "#0F0"],
         chart: {
           height: 280,
-          stacked:true,
+          stacked: true,
           type: "bar",
           toolbar: {
-            show: false
+            show: false,
           },
           zoom: {
-            enabled: true
+            enabled: true,
           },
-          
         },
         plotOptions: {
           bar: {
@@ -40,7 +56,6 @@ export default {
             dataLabels: {
               position: "top",
             },
-            
           },
         },
         dataLabels: {
@@ -48,7 +63,7 @@ export default {
           /* formatter: function (val) {
             return val + "h";
           }, */
-          offsetY: - 20,
+          offsetY: -20,
           style: {
             fontSize: "8px",
             colors: ["#304758"],
@@ -56,7 +71,7 @@ export default {
         },
 
         xaxis: {
-          categories: ["lun", "mar", "mie", "jue", "vie", "sab", "dom"],
+          categories: this.valoresEje,
           position: "bottom",
           axisBorder: {
             show: false,
@@ -94,40 +109,36 @@ export default {
             },
           },
         },
-
-        /* title: {
-          text: "Jornadas semanal",
-          floating: true,
-          offsetY: 330,
-          align: "center",
-          style: {
-            color: "#444",
-          },
-        }, */
-      },
-    };
-  },
-  //********************
-  //Variables calculadas
-  //********************
-  computed: {
-    series: function(){
-      return this.$parent.jornadas.obtenerDatosGraficaSemanal();
+      };
     },
-    tab: function(){
+    valoresEje: function () {
+      switch(this.$parent.tab){
+        case "semanal": 
+          return ["lun", "mar", "mie", "jue", "vie", "sab", "dom"];
+        case "mensual":
+          let array=[]
+          let dias=FuncionesAuxiliares.diasMes();
+          for (let i=1; i<=dias;i++){
+            array.push(i);
+          }
+          return array;
+        case "anual":
+          return ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"]
+      }
+      
+    },
+
+    tab: function () {
       return this.$parent.tab;
     },
 
-    horas: function(){
+    horas: function () {
       return this.$parent.horas;
     },
 
-    jornadas: function(){
+    jornadas: function () {
       return this.$parent.jornadas;
     },
-    lunes: function(){
-      return this.jornadas.obtenerDatosGraficaSemanal();
-    }
   },
 
   //********************
@@ -135,7 +146,7 @@ export default {
   //********************
   methods: {},
   components: {
-    'apexchart': VueApexCharts,
+    apexchart: VueApexCharts,
   },
 };
 </script>
