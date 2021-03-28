@@ -304,7 +304,7 @@ export default {
     //Comprueba si la fecha seleccionada manualmente ya tiene jornada asignada y
     //muestra mensaje de error
     existeFechaJornada: function(){
-      let respuesta= ListaJornadas.app.existeJornada(new Date(this.fechaManual).toLocaleDateString());
+      let respuesta= ListaJornadas.app.existeJornada(FuncionesAuxiliares.obtenerFecha(new Date(this.fechaManual)));
       if (respuesta){
         alert("Ya existe la jornada del " + this.fechaManual + ". Si deseas cambiarla ve al apartado 'EDITAR JORNADAS'");
         this.fechaManual=null;
