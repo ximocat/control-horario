@@ -1,6 +1,4 @@
 import FuncionesAuxiliares from "../clases/FuncionesAuxiliares.js";
-import JornadaTrabajo from "../clases/JornadaTrabajo.js";
-
 
 //Clase que representa todas las jornadas de trabajo
 class ListaJornadas {
@@ -41,7 +39,7 @@ class ListaJornadas {
         let indice = this.indiceJornada(fechaInicioJornada);
         if (confirm("Vas a borrar una Jornada ¿Quieres continuar?")) {
             this.arrayJornadas.splice(indice, 1);
-            console.log(this.arrayJornadas);
+            //console.log(this.arrayJornadas);
             FuncionesAuxiliares.guardarLocalStorage();//Guardo en LocalStorage
         }
         return indice;
@@ -108,18 +106,6 @@ class ListaJornadas {
         return cont;
     }
 
-    //Metodo que genera los datos para el gráfico que se mostrará en las estadísticas.
-    //Genera las jornadas de la semana actual, el mes actual y el año actual.
-    //Devuelve un array con los datos generados siendo:
-    //datos['semanal']: datos semanales
-    //datos['mensual']: datos mensuales
-    //datos['anual']: datos anuales
-    obtenerDatosGrafica() {
-        //Aray que contendrá los datos
-        let datos = [];
-    }
-
-
     //Metodo que genera los datos semanales para la grafica. Devuelve el array
     //con los datos
     obtenerDatosGraficaSemanal() {
@@ -172,8 +158,62 @@ class ListaJornadas {
             { name: "Exceso", data: dataExceso },
             { name: "Defecto", data: dataDefecto },
         ]
-        console.log(data);
         return data;
+    }
+
+    //Metodo que genera los datos mensuales para la grafica. Devuelve el array
+    //con los datos
+    obtenerDatosGraficaMensual() {
+        let dataJornada = [];
+        let dataExceso = [];
+        let dataDefecto = [];
+        let hoy = new Date();
+        let offsetComienzoSemana;
+        if (hoy.getDay() === 0) {//Si es domingo
+            offsetComienzoSemana = 6;
+        } else {//Para el resto de casos
+            offsetComienzoSemana = hoy.getDay() - 1;
+        }
+
+        //obtengo el array de los días de la semana en formato yyyymmdd
+        //El indice 0 es lunes y el 6 domingo
+        for (let i = 0; i < 7; i++) {
+            let dia = FuncionesAuxiliares.obtenerFecha(new Date(hoy - 24 * 3600 * 1000 * (offsetComienzoSemana - i)));
+            let indice = this.indiceJornada(dia);
+            let valorJornada;
+            let valorExceso;
+            let valorDefecto;
+            if (!this.existeJornada(dia)) {//No existe la Jornada
+                valorJornada = 0;
+                valorExceso = 0;
+                valorDefecto = 0;
+            } else {//Existe la jornada
+                valorJornada = this.pasarHorasDecimal(this.arrayJornadas[indice].getDuracionJornada());
+                if (i > 4) {//Es sábado o domingo, luego todo es exceso
+                    valorExceso = valorJornada;
+                    valorJornada = 0;
+                    valorDefecto = 0;
+                } else {//Dia laborable
+                    if (valorJornada > 8) { //Hay exceso de jornada
+                        valorExceso = valorJornada - 8;
+                        valorJornada = 8;
+                        valorDefecto = 0;
+                    } else {//Hay defecto de jornada
+                        valorDefecto = 8 - valorJornada;
+                        valorExceso = 0;
+                    }
+                }
+            }
+            dataJornada[i] = valorJornada;
+            dataExceso[i] = valorExceso;
+            dataDefecto[i] = valorDefecto;
+        }
+        let data = [
+            { name: "Jornada", data: dataJornada },
+            { name: "Exceso", data: dataExceso },
+            { name: "Defecto", data: dataDefecto },
+        ]
+           return data;
     }
 
 
