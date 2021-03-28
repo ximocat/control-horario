@@ -127,9 +127,6 @@ export default {
     },
     lunes: function(){
       return this.jornadas.obtenerDatosGraficaSemanal();
-    },
-    mostrarGrafico: function(){
-      return this.$parent.tab === 'semanal'
     }
   },
 
