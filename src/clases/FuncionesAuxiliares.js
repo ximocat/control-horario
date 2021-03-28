@@ -154,6 +154,14 @@ class FuncionesAuxiliares {
         } */
     }
 
+    //Retorna un entero con el número de días del mes actual
+    static diasMes(){
+        let hoy=this.obtenerFecha(new Date());
+        let anyo=hoy.substring(0,4);
+        let mes=hoy.substring(4,6);
+        return parseInt(new Date(anyo,mes,0).getDate());
+    }
+
 
 
 }
