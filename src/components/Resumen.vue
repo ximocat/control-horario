@@ -15,7 +15,7 @@
         </q-card-section>
       </q-card>
     </div>
-    <grafico/>
+    <grafico v-show="mostrarGrafico"/>
   </div>
 </template>
 
@@ -53,6 +53,10 @@ export default {
       if (this.tab === "mensual") return this.jornadas.calcularHorasMes();
       if (this.tab === "anual") return this.jornadas.calcularHorasAnyo();
     },
+
+    mostrarGrafico: function(){
+      return this.tab === 'semanal'
+    }
   },
 
   //********************
