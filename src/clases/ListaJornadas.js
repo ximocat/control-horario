@@ -120,9 +120,12 @@ class ListaJornadas {
     }
 
 
-    //Metodo que genera los datos semanales
+    //Metodo que genera los datos semanales para la grafica. Devuelve el array
+    //con los datos
     obtenerDatosGraficaSemanal() {
-        let data = []
+        let dataJornada = [];
+        let dataExceso = [];
+        let dataDefecto = [];
         let hoy = new Date();
         let offsetComienzoSemana;
         if (hoy.getDay() === 0) {//Si es domingo
@@ -136,19 +139,41 @@ class ListaJornadas {
         for (let i = 0; i < 7; i++) {
             let dia = FuncionesAuxiliares.obtenerFecha(new Date(hoy - 24 * 3600 * 1000 * (offsetComienzoSemana - i)));
             let indice = this.indiceJornada(dia);
-            let valor;
-            if (this.existeJornada(dia)) {
-                valor = 0
-            } else {
-                valor = this.pasarHorasDecimal(this.arrayJornadas[indice].getDuracionJornada());
+            let valorJornada;
+            let valorExceso;
+            let valorDefecto;
+            if (!this.existeJornada(dia)) {//No existe la Jornada
+                valorJornada = 0;
+                valorExceso = 0;
+                valorDefecto = 0;
+            } else {//Existe la jornada
+                valorJornada = this.pasarHorasDecimal(this.arrayJornadas[indice].getDuracionJornada());
+                if (i > 4) {//Es sábado o domingo, luego todo es exceso
+                    valorExceso = valorJornada;
+                    valorJornada = 0;
+                    valorDefecto = 0;
+                } else {//Dia laborable
+                    if (valorJornada > 8) { //Hay exceso de jornada
+                        valorExceso = valorJornada - 8;
+                        valorJornada = 8;
+                        valorDefecto = 0;
+                    } else {//Hay defecto de jornada
+                        valorDefecto = 8 - valorJornada;
+                        valorExceso = 0;
+                    }
+                }
             }
-            console.log(valor);
-            data[i] = valor;
+            dataJornada[i] = valorJornada;
+            dataExceso[i] = valorExceso;
+            dataDefecto[i] = valorDefecto;
         }
-
+        let data = [
+            { name: "Jornada", data: dataJornada },
+            { name: "Exceso", data: dataExceso },
+            { name: "Defecto", data: dataDefecto },
+        ]
         console.log(data);
-
-
+        return data;
     }
 
 

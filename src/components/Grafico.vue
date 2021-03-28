@@ -1,8 +1,6 @@
 <template>
   <div id="chart">
     <apexchart :options="chartOptions" height="280" :series="series"/>
-    {{tab}}{{horas}}
-    
   </div>
 </template>
 
@@ -20,6 +18,7 @@ export default {
   //********************
   data: function () {
     return {
+      
 
       chartOptions: {
         colors: ['#00F','#F00','#0F0'],
@@ -113,10 +112,7 @@ export default {
   //********************
   computed: {
     series: function(){
-      let datos=[{name: "Jornada",data: [8, 6.3, 8, 8, 8, 0, 0]},
-        {name: "Exceso",data: [0.5, 0, 0, 0, 0, 0, 2]},
-        {name: "Defecto",data: [0, 1.7, 0, 0, 0, 0, 0]}];
-      return datos;
+      return this.$parent.jornadas.obtenerDatosGraficaSemanal();
     },
     tab: function(){
       return this.$parent.tab;
@@ -128,6 +124,12 @@ export default {
 
     jornadas: function(){
       return this.$parent.jornadas;
+    },
+    lunes: function(){
+      return this.jornadas.obtenerDatosGraficaSemanal();
+    },
+    mostrarGrafico: function(){
+      return this.$parent.tab === 'semanal'
     }
   },
 
