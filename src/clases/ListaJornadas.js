@@ -71,12 +71,16 @@ class ListaJornadas {
 
     //Metodo que me devuelve un string tipo "hh:mm:ss" con las horas de las
     //jornadas del mes actual
-    calcularHorasMes() {
-        let cont = "00:00:00";
-        //Hoy en formato string YYYYMMDD
-        let hoy = FuncionesAuxiliares.obtenerFecha(new Date());
-        let mes = hoy.substring(0, 6);//Obtengo los 6 primeros caracteres de hoy, es decir YYYYMM
+    calcularHorasMesActual() {
+        return this.calcularHorasMes(FuncionesAuxiliares.obtenerFecha(new Date()));
+    }
 
+    //Metodo que me devuelve un string tipo "hh:mm:ss" con las horas de las
+    //jornadas del cuya fecha pasamos como parámetro
+    calcularHorasMes(fecha) {
+        let cont = "00:00:00";
+
+        let mes = fecha.substring(0, 6);//Obtengo los 6 primeros caracteres de hoy, es decir YYYYMM
         let diaSuma;
         for (let i = 0; i < this.arrayJornadas.length; i++) {
             diaSuma = FuncionesAuxiliares.obtenerFecha(this.arrayJornadas[i].arrayIntervalos[0].getFechaInicio());
@@ -167,18 +171,13 @@ class ListaJornadas {
         let dataJornada = [];
         let dataExceso = [];
         let dataDefecto = [];
-        let hoy = new Date();
-        let offsetComienzoSemana;
-        if (hoy.getDay() === 0) {//Si es domingo
-            offsetComienzoSemana = 6;
-        } else {//Para el resto de casos
-            offsetComienzoSemana = hoy.getDay() - 1;
-        }
-
-        //obtengo el array de los días de la semana en formato yyyymmdd
-        //El indice 0 es lunes y el 6 domingo
-        for (let i = 0; i < 7; i++) {
-            let dia = FuncionesAuxiliares.obtenerFecha(new Date(hoy - 24 * 3600 * 1000 * (offsetComienzoSemana - i)));
+        let anyo = FuncionesAuxiliares.obtenerFecha(new Date()).substring(0, 4);
+        let mes = FuncionesAuxiliares.obtenerFecha(new Date()).substring(4, 6);
+        let numDias = FuncionesAuxiliares.diasMes()
+        //obtengo el array de los días del mes en formato yyyymmdd
+        //El indice = dia del mes -1
+        for (let i = 0; i < numDias; i++) {
+            let dia = anyo + mes + (i < 9 ? "0" + (i + 1) : (i + 1));
             let indice = this.indiceJornada(dia);
             let valorJornada;
             let valorExceso;
@@ -189,7 +188,8 @@ class ListaJornadas {
                 valorDefecto = 0;
             } else {//Existe la jornada
                 valorJornada = this.pasarHorasDecimal(this.arrayJornadas[indice].getDuracionJornada());
-                if (i > 4) {//Es sábado o domingo, luego todo es exceso
+
+                if (FuncionesAuxiliares.diaSemana(dia) > 4) {//Es sábado o domingo, luego todo es exceso
                     valorExceso = valorJornada;
                     valorJornada = 0;
                     valorDefecto = 0;
@@ -213,7 +213,30 @@ class ListaJornadas {
             { name: "Exceso", data: dataExceso },
             { name: "Defecto", data: dataDefecto },
         ]
-           return data;
+        return data;
+    }
+
+    //Metodo que genera los datos anuales para la grafica. Devuelve el array
+    //con los datos
+    obtenerDatosGraficaAnual() {
+        let dataJornada = [];
+        let dataExceso = [];
+        let dataDefecto = [];
+        let anyo = FuncionesAuxiliares.obtenerFecha(new Date()).substring(0, 4);
+        let mes = FuncionesAuxiliares.obtenerFecha(new Date()).substring(4, 6);
+        //obtengo el array de los meses del año en formato yyyymmdd
+        //El indice = dia del mes -1
+        for (let i = 0; i < 12; i++) {
+            dataJornada[i] = this.calcularHorasMes(anyo + (i < 9 ? "0" + (i + 1) : (i + 1)) + "01");
+            dataExceso[i] = 0;
+            dataDefecto[i] = 0;
+        }
+        let data = [
+            { name: "Jornada", data: dataJornada },
+            { name: "Exceso", data: dataExceso },
+            { name: "Defecto", data: dataDefecto },
+        ]
+        return data;
     }
 
 

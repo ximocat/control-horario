@@ -28,9 +28,9 @@ export default {
         case "semanal":
           return this.$parent.jornadas.obtenerDatosGraficaSemanal();
         case "mensual":
-          return this.$parent.jornadas.obtenerDatosGraficaSemanal();
+          return this.$parent.jornadas.obtenerDatosGraficaMensual();
         case "anual":
-          return this.$parent.jornadas.obtenerDatosGraficaSemanal();
+          return this.$parent.jornadas.obtenerDatosGraficaAnual();
         default:
           console.log("Algo ha fallado");
           return null;
@@ -111,6 +111,7 @@ export default {
         },
       };
     },
+    //Titulo de las unidades del eje x
     valoresEje: function () {
       switch(this.$parent.tab){
         case "semanal": 
@@ -119,7 +120,7 @@ export default {
           let array=[]
           let dias=FuncionesAuxiliares.diasMes();
           for (let i=1; i<=dias;i++){
-            array.push(i);
+            array.push(String(i));
           }
           return array;
         case "anual":

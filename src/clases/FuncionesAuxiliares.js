@@ -1,8 +1,6 @@
 import IntervaloJornada from "./IntervaloJornada";
 import ListaJornadas from "./ListaJornadas";
 import JornadaTrabajo from "./JornadaTrabajo";
-
-
 class FuncionesAuxiliares {
     //Funcion estática para guardar en localStorage la variable ListaJornadas.app
     static guardarLocalStorage() {
@@ -110,13 +108,13 @@ class FuncionesAuxiliares {
         }
     }
     //Funcion para exportar un objeto pasado como parámetro a un archivo JSON
-    static exportar(objeto){
-        let str= JSON.stringify(objeto);
+    static exportar(objeto) {
+        let str = JSON.stringify(objeto);
         let fecha = this.obtenerFecha(new Date());
-        const nombreArchivo = "export_"+fecha+".json";
+        const nombreArchivo = "export_" + fecha + ".json";
 
-        const blob = new Blob([str], {type: "application/json" });
-        
+        const blob = new Blob([str], { type: "application/json" });
+
         if (navigator.msSaveBlob) {
             navigator.msSaveBlob(blob, nombreArchivo);
         } else {
@@ -133,9 +131,9 @@ class FuncionesAuxiliares {
         }
     }
 
-    static importar(){
+    static importar() {
         alert("Tendrás que esperar");
-        let str="Hola";
+        let str = "Hola";
         /* const blob = new Blob([str], {type: "application/json" });
         navigator.msSaveOrOpenBlob(blob,"export_20210324.json"); */
         /* if (navigator.msSaveBlob) {
@@ -155,11 +153,19 @@ class FuncionesAuxiliares {
     }
 
     //Retorna un entero con el número de días del mes actual
-    static diasMes(){
-        let hoy=this.obtenerFecha(new Date());
-        let anyo=hoy.substring(0,4);
-        let mes=hoy.substring(4,6);
-        return parseInt(new Date(anyo,mes,0).getDate());
+    static diasMes() {
+        let hoy = this.obtenerFecha(new Date());
+        let anyo = hoy.substring(0, 4);
+        let mes = hoy.substring(4, 6);
+        return parseInt(new Date(anyo, mes, 0).getDate());
+    }
+
+    //Funcion a la que le paso una fecha en formayo yyyymmdd y me devuelve un
+    //entero que representa el día de la semana (0->Lunes, 1->Martes...6->Domingo)
+    static diaSemana(fecha) {
+        let diaDate = new Date(fecha.substring(0, 4), fecha.substring(4, 6) -1, 
+            fecha.substring(6, 8));
+        return diaDate.getDay()===0 ? 6 : diaDate.getDay()-1 ;
     }
 
 

@@ -50,7 +50,7 @@ export default {
 
     horas: function () {
       if (this.tab === "semanal") return this.jornadas.calcularHorasSemana();
-      if (this.tab === "mensual") return this.jornadas.calcularHorasMes();
+      if (this.tab === "mensual") return this.jornadas.calcularHorasMesActual();
       if (this.tab === "anual") return this.jornadas.calcularHorasAnyo();
     },
 
