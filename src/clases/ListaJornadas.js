@@ -227,7 +227,8 @@ class ListaJornadas {
         //obtengo el array de los meses del año en formato yyyymmdd
         //El indice = dia del mes -1
         for (let i = 0; i < 12; i++) {
-            dataJornada[i] = this.calcularHorasMes(anyo + (i < 9 ? "0" + (i + 1) : (i + 1)) + "01");
+            console.log(this.pasarHorasDecimal(this.calcularHorasMes(anyo + (i < 9 ? "0" + (i + 1) : (i + 1)) + "01")));
+            dataJornada[i] = this.pasarHorasDecimal(this.calcularHorasMes(anyo + (i < 9 ? "0" + (i + 1) : (i + 1)) + "01"));
             dataExceso[i] = 0;
             dataDefecto[i] = 0;
         }
